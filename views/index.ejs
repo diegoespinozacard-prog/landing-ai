@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MultIA — Todo en un solo lugar</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="/css/variables.css">
+  <link rel="stylesheet" href="/css/nav.css">
+  <link rel="stylesheet" href="/css/hero.css">
+  <link rel="stylesheet" href="/css/sections.css">
+  <link rel="stylesheet" href="/css/story.css">
+  <link rel="stylesheet" href="/css/pricing.css">
+  <link rel="stylesheet" href="/css/modal.css">
+  <link rel="stylesheet" href="/css/footer.css">
+  <link rel="stylesheet" href="/css/world-real.css">
+  <link rel="stylesheet" href="/css/responsive.css">
+</head>
+<body>
+
+  <div id="scroll-progress"></div>
+
+  <%- include('partials/nav',          { models }) %>
+  <%- include('partials/hero') %>
+  <%- include('partials/sell-strip') %>
+  <%- include('partials/features',     { features }) %>
+  <%- include('partials/scroll-story', { storySteps }) %>
+  <%- include('partials/benefits',     { benefits }) %>
+  <%- include('partials/world-real') %>
+  <%- include('partials/profiles',     { userProfiles }) %>
+  <%- include('partials/pricing',      { pricingPlans }) %>
+  <%- include('partials/footer') %>
+  <%- include('partials/modal',        { pricingPlans }) %>
+  <%- include('partials/enterprise-modal') %>
+
+  <script src="/js/spotlight.js"></script>
+  <script src="/js/utils.js"></script>
+  <script src="/js/nav.js"></script>
+  <script src="/js/story.js"></script>
+  <script src="/js/modal.js"></script>
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script>
+    lucide.createIcons();
+
+    /* Enterprise modal */
+    function openEnterpriseModal() {
+      document.getElementById('enterprise-modal').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeEnterpriseModal() {
+      document.getElementById('enterprise-modal').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+    function submitEnterprise() {
+      var nombre  = document.getElementById('ent-nombre').value.trim();
+      var correo  = document.getElementById('ent-correo').value.trim();
+      var empresa = document.getElementById('ent-empresa').value.trim();
+      var req     = document.getElementById('ent-req').value.trim();
+      if (!nombre || !correo || !empresa || !req) {
+        alert('Por favor completa los campos obligatorios (*)');
+        return;
+      }
+      alert('¡Gracias ' + nombre + '! Nos pondremos en contacto contigo pronto.');
+      closeEnterpriseModal();
+    }
+    document.getElementById('enterprise-modal').addEventListener('click', function(e) {
+      if (e.target === this) closeEnterpriseModal();
+    });
+  </script>
+
+</body>
+</html>

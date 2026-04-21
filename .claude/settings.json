@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python3 -c \"import sys,json; lines=sys.stdin.read\\(\\).strip\\(\\).split\\('\\\\n'\\); [print\\(json.loads\\(l\\).get\\('content',''\\)[:500] if isinstance\\(json.loads\\(l\\).get\\('content',''\\),str\\) else ''\\) for l in lines[-20:] if l]\")",
+      "Bash(python3)",
+      "Bash(node -e \"require\\('./server'\\)\")",
+      "Bash(curl -s http://localhost:3000)",
+      "WebFetch(domain:twin.so)",
+      "Bash(curl -s \"https://twin.so/\")",
+      "Bash(curl -s \"https://twin.so/_astro/21-days.BdJhaSHb.css\")",
+      "Bash(curl -s \"https://twin.so/_astro/Homepage.wY4uJqZu.js\")",
+      "Bash(curl -s \"https://twin.so/_astro/client.BLUn-lwI.js\")",
+      "WebFetch(domain:www.synopsis.ws)"
+    ]
+  }
+}

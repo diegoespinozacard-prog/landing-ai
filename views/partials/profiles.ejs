@@ -1,0 +1,24 @@
+<section id="profiles" class="sec-zoom">
+  <div class="wrap">
+    <div class="sec-header rv">
+      <span class="chip chip-amber chip-dot" style="margin-bottom:16px">Para ti</span>
+      <h2 class="ttl hd-zoom" style="margin-bottom:12px">MultIA se adapta<br/><em style="font-style:normal;color:var(--amber)">a tu perfil</em></h2>
+      <p class="lead rv">Diseñado para quienes exigen más de sus herramientas de trabajo.</p>
+    </div>
+
+    <div class="prof-grid stagger-grid">
+      <% userProfiles.forEach((p, i) => { %>
+      <div class="prof-card <%= i % 2 === 0 ? 'rv-l' : 'rv-r' %> d<%= (i % 4) + 1 %>">
+        <div class="prof-icon"><i data-lucide="<%= p.icon %>"></i></div>
+        <div class="prof-name"><%= p.name %></div>
+        <p class="prof-desc"><%= p.desc %></p>
+        <ul class="prof-cases">
+          <% p.cases.forEach(c => { %>
+          <li><span class="prof-check">✓</span><%= c %></li>
+          <% }) %>
+        </ul>
+      </div>
+      <% }) %>
+    </div>
+  </div>
+</section>

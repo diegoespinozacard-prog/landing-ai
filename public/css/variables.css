@@ -1,0 +1,235 @@
+/* ── Reset & Base ──────────────────────────────────────── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+*{cursor:none !important}
+html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
+body{
+  background-color:var(--bg);color:var(--ink);
+  font-family:var(--f-body);font-size:15px;line-height:1.65;overflow-x:hidden;
+  /* dot grid texture */
+  background-image:radial-gradient(rgba(255,255,255,0.028) 1px,transparent 1px);
+  background-size:24px 24px
+}
+/* Ambient amber glow at top */
+body::before{
+  content:'';position:fixed;top:-180px;left:50%;transform:translateX(-50%);
+  width:900px;height:600px;pointer-events:none;z-index:0;
+  background:radial-gradient(ellipse,rgba(245,166,35,0.055) 0%,transparent 68%)
+}
+a{text-decoration:none;color:inherit}
+button{font-family:var(--f-body);cursor:pointer;border:none}
+ul{list-style:none}
+
+::-webkit-scrollbar{width:5px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.12);border-radius:4px}
+
+/* ── Dark Mode Properties ───────────────────────────────── */
+:root{
+  --bg:#0B0B0B;
+  --bg2:#141414;
+  --bg3:#1C1C1C;
+  --white:#111111;
+
+  --ink:#F0EEE8;
+  --ink2:#C8C4BB;
+  --ink3:#78746E;
+  --ink4:#464340;
+
+  --border:rgba(255,255,255,0.07);
+  --border2:rgba(255,255,255,0.13);
+
+  --amber:#F5A623;--amber-d:#D4890E;
+  --amber-light:rgba(245,166,35,0.10);
+  --amber-mid:rgba(245,166,35,0.20);
+  --amber-glow:rgba(245,166,35,0.12);
+  --amber-ring:rgba(245,166,35,0.35);
+
+  --green:#22C55E;
+  --green-bg:rgba(34,197,94,0.10);
+  --green-bd:rgba(34,197,94,0.25);
+
+  --f-display:'Sora',sans-serif;--f-body:'DM Sans',sans-serif;
+
+  --sh1:0 1px 4px rgba(0,0,0,0.5);
+  --sh2:0 4px 20px rgba(0,0,0,0.6);
+  --sh3:0 10px 40px rgba(0,0,0,0.7);
+  --sh4:0 24px 80px rgba(0,0,0,0.8);
+  --sh-amber:0 8px 40px rgba(245,166,35,0.22);
+
+  --r:10px;--r2:16px;--r3:24px;--r-full:9999px;
+  --nav-h:66px;
+}
+
+/* ── Layout ────────────────────────────────────────────── */
+.wrap{max-width:1120px;margin:0 auto;padding:0 40px}
+
+/* ── Typography ────────────────────────────────────────── */
+.disp{
+  font-family:var(--f-display);font-size:clamp(38px,5.5vw,64px);
+  font-weight:800;letter-spacing:-0.04em;line-height:1.0;color:var(--ink)
+}
+.ttl{
+  font-family:var(--f-display);font-size:clamp(36px,5vw,72px);
+  font-weight:700;letter-spacing:-0.03em;line-height:1.12
+}
+.lead{font-size:clamp(15px,1.8vw,17px);line-height:1.8;color:var(--ink3);font-weight:400}
+
+/* ── Buttons ───────────────────────────────────────────── */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  font-family:var(--f-body);font-weight:600;cursor:pointer;
+  transition:all 0.18s ease;white-space:nowrap;border:none
+}
+.btn-amber{
+  position:relative;overflow:hidden;
+  background:var(--amber);color:#fff;padding:13px 26px;
+  border-radius:var(--r);font-size:14px;
+  box-shadow:0 2px 0 var(--amber-d),0 4px 16px rgba(245,166,35,0.35)
+}
+.btn-amber::after{
+  content:'';position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(105deg,transparent 35%,rgba(255,255,255,0.28) 50%,transparent 65%);
+  background-size:220% 100%;background-position:-220% 0;
+  animation:shimmer-slide 3.5s ease-in-out infinite
+}
+.btn-amber:hover{background:#e89b18;transform:translateY(-1px);box-shadow:0 2px 0 var(--amber-d),0 8px 24px rgba(245,166,35,0.45)}
+.btn-amber.lg{font-size:16px;padding:17px 38px;border-radius:var(--r2)}
+
+/* ── Chips ─────────────────────────────────────────────── */
+.chip{
+  display:inline-flex;align-items:center;gap:6px;padding:5px 12px;
+  border-radius:var(--r-full);font-size:11px;font-weight:700;
+  letter-spacing:0.07em;text-transform:uppercase
+}
+.chip-amber{background:var(--amber-light);color:var(--amber);border:1.5px solid rgba(245,166,35,0.25)}
+.chip-dot::before{content:'';width:5px;height:5px;border-radius:50%;background:currentColor;flex-shrink:0}
+
+/* ── Scroll reveal — reversible (enter spring, exit snap) ─ */
+.rv,.rv-l,.rv-r,.rv-u{
+  opacity:0;
+  will-change:transform,opacity;
+  transition:opacity 0.3s cubic-bezier(0.4,0,1,1),transform 0.3s cubic-bezier(0.4,0,1,1)
+}
+.rv   { transform:translateY(48px) }
+.rv-l { transform:translateX(-80px) }
+.rv-r { transform:translateX(80px) }
+.rv-u { transform:translateY(-40px) }
+.rv.on,.rv-l.on,.rv-r.on,.rv-u.on{
+  opacity:1;transform:none;
+  transition:opacity 0.7s cubic-bezier(0.16,1,0.3,1),transform 0.7s cubic-bezier(0.16,1,0.3,1)
+}
+
+.d1{transition-delay:0.06s}
+.d2{transition-delay:0.16s}
+.d3{transition-delay:0.28s}
+.d4{transition-delay:0.42s}
+
+/* ── Word-by-word reveal ─────────────────────────────────── */
+.word-span{
+  display:inline-block;opacity:0;
+  transition:opacity 0.16s cubic-bezier(0.4,0,1,1),transform 0.16s cubic-bezier(0.4,0,1,1)
+}
+[data-word-reveal="up"]   .word-span{transform:translateY(20px)}
+[data-word-reveal="ltr"]  .word-span{transform:translateX(-20px)}
+[data-word-reveal="rtl"]  .word-span{transform:translateX(20px)}
+[data-word-reveal="down"] .word-span{transform:translateY(-20px)}
+.word-revealed .word-span{
+  opacity:1;transform:none;
+  transition:opacity 0.5s cubic-bezier(0.16,1,0.3,1),transform 0.5s cubic-bezier(0.16,1,0.3,1);
+  transition-delay:calc(var(--wi)*0.055s)
+}
+[data-word-reveal="rtl"].word-revealed .word-span{
+  transition-delay:calc(var(--wi-r,0)*0.055s)
+}
+
+/* ── Section entrance ──────────────────────────────────── */
+.sec-enter{
+  opacity:0;transform:translateY(20px);
+  transition:opacity 0.8s cubic-bezier(0.16,1,0.3,1),transform 0.8s cubic-bezier(0.16,1,0.3,1)
+}
+.sec-enter.sec-visible{opacity:1;transform:none}
+
+/* ── Dramatic heading zoom — starts 3× huge, zooms to place ── */
+.hd-zoom{
+  opacity:0;transform:scale(1.35);
+  transform-origin:center center;
+  will-change:transform,opacity;
+  transition:opacity .3s cubic-bezier(0.4,0,1,1),transform .3s cubic-bezier(0.4,0,1,1)
+}
+.hd-zoom.on{
+  opacity:1;transform:scale(1);
+  transition:opacity 1s cubic-bezier(0.16,1,0.3,1),transform 1.2s cubic-bezier(0.16,1,0.3,1)
+}
+
+/* ── Dramatic section zoom — direction-aware ─────────────── */
+.sec-zoom{
+  opacity:0;transform:scale(0.88) translateY(60px);
+  will-change:transform,opacity;
+  transition:opacity .4s cubic-bezier(0.4,0,1,1),transform .4s cubic-bezier(0.4,0,1,1)
+}
+.sec-zoom.sz-in{
+  opacity:1;transform:scale(1) translateY(0);
+  transition:opacity 1s cubic-bezier(0.16,1,0.3,1),transform 1.1s cubic-bezier(0.16,1,0.3,1)
+}
+/* Scrolled past — scale up and vanish */
+.sec-zoom.sz-above{
+  opacity:0;transform:scale(1.12) translateY(-50px);
+  transition:opacity .5s ease-in,transform .5s ease-in
+}
+
+/* ── Scroll progress bar ────────────────────────────────── */
+#scroll-progress{
+  position:fixed;top:0;left:0;right:0;height:2px;z-index:1100;
+  background:linear-gradient(90deg,var(--amber-d),var(--amber),#FFD166);
+  transform:scaleX(0);transform-origin:left;will-change:transform;
+  box-shadow:0 0 10px rgba(245,166,35,0.6)
+}
+
+/* ── Keyframes ─────────────────────────────────────────── */
+@keyframes shimmer-slide{
+  0%{background-position:-220% 0;opacity:0}
+  8%{opacity:1}
+  35%{background-position:220% 0}
+  36%,100%{opacity:0}
+}
+@keyframes float-gentle{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(-8px)}
+}
+@keyframes glow-pulse{
+  0%,100%{box-shadow:0 0 0 0 rgba(245,166,35,0.0)}
+  50%{box-shadow:0 0 40px 12px rgba(245,166,35,0.18)}
+}
+@keyframes badge-breathe{
+  0%,100%{opacity:0.75}
+  50%{opacity:1}
+}
+.float-anim{animation:float-gentle 3.2s ease-in-out infinite}
+.glow-anim{animation:glow-pulse 2.8s ease-in-out infinite}
+
+/* ── Light Mode ─────────────────────────────────────────── */
+html.light-mode{
+  --bg:#E8E5DC;
+  --bg2:#DDD9CF;
+  --bg3:#D2CEC3;
+  --white:#EDEAE1;
+  --ink:#18170F;
+  --ink2:#3B3930;
+  --ink3:#78746E;
+  --ink4:#AAA79F;
+  --border:rgba(0,0,0,0.09);
+  --border2:rgba(0,0,0,0.16);
+  --sh1:0 1px 4px rgba(0,0,0,0.08);
+  --sh2:0 4px 20px rgba(0,0,0,0.1);
+  --sh3:0 10px 40px rgba(0,0,0,0.14);
+  --sh4:0 24px 80px rgba(0,0,0,0.18);
+  --sh-amber:0 8px 40px rgba(245,166,35,0.3)
+}
+html.light-mode body{
+  background-image:radial-gradient(rgba(0,0,0,0.055) 1px,transparent 1px)
+}
+html.light-mode body::before{
+  background:radial-gradient(ellipse,rgba(245,166,35,0.07) 0%,transparent 68%)
+}
+html.light-mode ::-webkit-scrollbar-track{background:var(--bg)}
+html.light-mode ::-webkit-scrollbar-thumb{background:rgba(0,0,0,0.18)}

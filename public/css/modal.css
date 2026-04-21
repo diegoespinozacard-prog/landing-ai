@@ -1,0 +1,79 @@
+/* ── Payment modal ─────────────────────────────────────── */
+.modal-overlay{
+  position:fixed;inset:0;background:rgba(17,17,16,0.7);z-index:1000;
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;pointer-events:none;
+  transition:opacity 0.2s;backdrop-filter:blur(8px)
+}
+.modal-overlay.open{opacity:1;pointer-events:auto}
+
+.modal-box{
+  background:var(--white);border-radius:var(--r3);padding:36px;
+  max-width:460px;width:90%;
+  box-shadow:0 40px 100px rgba(0,0,0,0.8),0 0 0 1px rgba(255,255,255,0.06);
+  transform:scale(0.96);transition:transform 0.2s;
+  position:relative;max-height:90vh;overflow-y:auto
+}
+.enterprise-box{max-width:520px}
+.modal-overlay.open .modal-box{transform:scale(1)}
+
+.modal-close{
+  position:absolute;top:14px;right:14px;background:var(--bg2);border:none;
+  width:30px;height:30px;border-radius:50%;cursor:pointer;font-size:18px;
+  display:flex;align-items:center;justify-content:center;color:var(--ink3)
+}
+.modal-close:hover{background:var(--border2)}
+
+/* Modal content */
+.pay-modal h2{font-family:var(--f-display);font-size:20px;font-weight:800;margin-bottom:4px}
+.pay-modal h2 span{color:var(--amber)}
+
+.plan-badge{
+  display:inline-flex;align-items:center;gap:6px;background:var(--amber-light);
+  color:#8A5608;border:1px solid rgba(245,166,35,0.3);border-radius:var(--r-full);
+  padding:4px 12px;font-size:12px;font-weight:700;margin-bottom:20px
+}
+.plan-badge i,.plan-badge svg{width:12px;height:12px;stroke-width:2;fill:currentColor;stroke:none}
+
+.pay-secure i,.pay-secure svg{width:13px;height:13px;stroke-width:2}
+
+.pay-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+.pay-full{margin-bottom:12px}
+
+.pay-label{
+  font-size:12px;font-weight:600;color:var(--ink3);
+  margin-bottom:5px;letter-spacing:0.02em
+}
+.pay-field{
+  width:100%;padding:11px 14px;border:1.5px solid var(--border);
+  border-radius:var(--r);font-family:var(--f-body);font-size:14px;
+  color:var(--ink);outline:none;transition:border-color 0.15s;background:var(--white)
+}
+.pay-field:focus{border-color:var(--amber);box-shadow:0 0 0 3px var(--amber-glow)}
+
+.pay-card-wrap{position:relative}
+.pay-card-icon{
+  position:absolute;right:12px;top:50%;transform:translateY(-50%);
+  color:var(--ink4);display:flex;align-items:center
+}
+.pay-card-icon i,.pay-card-icon svg{width:18px;height:18px;stroke-width:1.75}
+
+.pay-sep{
+  display:flex;align-items:center;gap:12px;
+  margin:16px 0;color:var(--ink4);font-size:13px
+}
+.pay-sep::before,.pay-sep::after{content:'';flex:1;height:1px;background:var(--border)}
+
+.pay-secure{
+  display:flex;align-items:center;gap:6px;font-size:12px;
+  color:var(--ink4);justify-content:center;margin-top:14px
+}
+
+/* Enterprise modal extras */
+.ent-contact{
+  display:flex;align-items:center;gap:8px;font-size:13px;
+  color:var(--ink3);margin-top:16px;padding-top:16px;
+  border-top:1px solid var(--border);justify-content:center
+}
+.ent-contact a{color:var(--amber);font-weight:600}
+.ent-contact i,.ent-contact svg{width:14px;height:14px;stroke-width:1.75;color:var(--amber)}

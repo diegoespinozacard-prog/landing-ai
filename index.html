@@ -1,0 +1,1141 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MultIA — Todo en un solo lugar</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
+:root{
+  --bg:#FAFAF8;--bg2:#F4F3EF;--bg3:#EBEBE6;--white:#FFFFFF;
+  --ink:#111110;--ink2:#2D2C2A;--ink3:#5C5A56;--ink4:#9B9895;
+  --border:#E5E3DF;--border2:#D0CEC9;
+  --amber:#F5A623;--amber-d:#D4890E;
+  --amber-light:#FFF6E3;--amber-mid:#FFE8B0;
+  --amber-glow:rgba(245,166,35,0.14);--amber-ring:rgba(245,166,35,0.4);
+  --green:#16A34A;--green-bg:rgba(22,163,74,0.08);--green-bd:rgba(22,163,74,0.25);
+  --f-display:'Sora',sans-serif;--f-body:'DM Sans',sans-serif;
+  --sh1:0 1px 3px rgba(0,0,0,0.06);--sh2:0 4px 14px rgba(0,0,0,0.08);
+  --sh3:0 8px 32px rgba(0,0,0,0.10);--sh4:0 24px 64px rgba(0,0,0,0.12);
+  --sh-amber:0 8px 32px rgba(245,166,35,0.28);
+  --r:10px;--r2:16px;--r3:24px;--r-full:9999px;
+  --nav-h:66px;
+}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.65;overflow-x:hidden}
+a{text-decoration:none;color:inherit}
+button{font-family:var(--f-body);cursor:pointer;border:none}
+ul{list-style:none}
+::-webkit-scrollbar{width:5px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:4px}
+.wrap{max-width:1120px;margin:0 auto;padding:0 40px}
+@media(max-width:768px){.wrap{padding:0 20px}}
+.disp{font-family:var(--f-display);font-size:clamp(38px,5.5vw,64px);font-weight:800;letter-spacing:-0.04em;line-height:1.0;color:var(--ink)}
+.ttl{font-family:var(--f-display);font-size:clamp(22px,2.8vw,34px);font-weight:700;letter-spacing:-0.03em;line-height:1.12}
+.lead{font-size:clamp(15px,1.8vw,17px);line-height:1.8;color:var(--ink3);font-weight:400}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-family:var(--f-body);font-weight:600;cursor:pointer;transition:all 0.18s ease;white-space:nowrap;border:none}
+.btn-amber{background:var(--amber);color:#fff;padding:13px 26px;border-radius:var(--r);font-size:14px;box-shadow:0 2px 0 var(--amber-d),0 4px 14px rgba(245,166,35,0.32)}
+.btn-amber:hover{background:#e89b18;transform:translateY(-1px)}
+.btn-amber.lg{font-size:16px;padding:17px 38px;border-radius:var(--r2)}
+.chip{display:inline-flex;align-items:center;gap:6px;padding:5px 12px;border-radius:var(--r-full);font-size:11px;font-weight:700;letter-spacing:0.07em;text-transform:uppercase}
+.chip-amber{background:var(--amber-light);color:#8A5608;border:1.5px solid rgba(245,166,35,0.3)}
+.chip-dot::before{content:'';width:5px;height:5px;border-radius:50%;background:currentColor;flex-shrink:0}
+.rv{opacity:0;transform:translateY(18px);transition:opacity 0.55s cubic-bezier(0.16,1,0.3,1),transform 0.55s cubic-bezier(0.16,1,0.3,1)}
+.rv.on{opacity:1;transform:none}
+.d1{transition-delay:0.05s}.d2{transition-delay:0.12s}.d3{transition-delay:0.20s}.d4{transition-delay:0.30s}
+
+/* NAV */
+#nav{position:fixed;top:0;left:0;right:0;z-index:900;height:var(--nav-h);
+  background:rgba(250,250,248,0.97);backdrop-filter:blur(24px);
+  -webkit-backdrop-filter:blur(24px);border-bottom:1px solid var(--border)}
+.nav-inner{display:flex;align-items:center;height:100%;gap:4px}
+.nav-logo{flex-shrink:0;margin-right:8px;display:flex;align-items:center;gap:8px;
+  font-family:var(--f-display);font-size:22px;font-weight:800;color:var(--ink);letter-spacing:-0.03em}
+.nav-logo span{color:var(--amber)}
+.nav-actions{display:flex;align-items:center;gap:8px;margin-left:auto}
+@media(max-width:640px){.nav-menu{display:none}}
+
+/* Dropdown nav items */
+.nav-menu{display:flex;align-items:center;gap:2px}
+.nav-dd{position:relative}
+.nav-dd-btn{display:inline-flex;align-items:center;gap:5px;background:none;border:none;
+  color:var(--ink3);font-size:14px;padding:8px 13px;border-radius:var(--r);
+  cursor:pointer;font-family:var(--f-body);transition:all 0.15s;white-space:nowrap}
+.nav-dd-btn:hover,.nav-dd-btn.open{background:var(--bg2);color:var(--ink)}
+.nav-dd-btn svg{transition:transform 0.2s;flex-shrink:0}
+.nav-dd-btn.open svg{transform:rotate(180deg)}
+.nav-dd-panel{
+  position:absolute;top:calc(100% + 10px);left:0;
+  background:var(--white);border:1.5px solid var(--border);
+  border-radius:var(--r2);box-shadow:var(--sh4);
+  min-width:340px;z-index:800;
+  opacity:0;pointer-events:none;transform:translateY(-8px);
+  transition:opacity 0.2s cubic-bezier(0.16,1,0.3,1),transform 0.2s cubic-bezier(0.16,1,0.3,1)}
+.nav-dd-panel.open{opacity:1;pointer-events:auto;transform:translateY(0)}
+.nav-dd-panel.wide{min-width:520px}
+
+/* Conoce panel — accordion */
+.conoce-header{padding:20px 20px 14px;border-bottom:1px solid var(--border)}
+.conoce-header-logo{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.conoce-header-name{font-family:var(--f-display);font-size:15px;font-weight:800;color:var(--ink)}
+.conoce-header-name span{color:var(--amber)}
+.conoce-header-desc{font-size:13px;color:var(--ink3);line-height:1.6}
+.accordion-item{border-bottom:1px solid var(--border)}
+.accordion-item:last-child{border-bottom:none}
+.accordion-btn{width:100%;display:flex;align-items:center;justify-content:space-between;
+  padding:13px 20px;background:none;border:none;cursor:pointer;font-family:var(--f-body);
+  font-size:13px;font-weight:600;color:var(--ink2);text-align:left;transition:background 0.15s}
+.accordion-btn:hover{background:var(--bg2)}
+.accordion-btn svg{transition:transform 0.2s;flex-shrink:0;color:var(--ink4)}
+.accordion-btn.open svg{transform:rotate(180deg)}
+.accordion-body{display:none;padding:0 20px 14px;font-size:13px;color:var(--ink3);line-height:1.75}
+.accordion-body.open{display:block}
+.acc-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.acc-tag{padding:4px 10px;border-radius:var(--r-full);background:var(--amber-light);
+  color:#8A5608;font-size:11px;font-weight:700;border:1px solid rgba(245,166,35,0.3)}
+
+/* Recursos panel — model grid */
+.rec-panel-header{padding:16px 18px 12px;border-bottom:1px solid var(--border)}
+.rec-panel-header-title{font-family:var(--f-display);font-size:13px;font-weight:700;color:var(--ink);margin-bottom:2px}
+.rec-panel-header-sub{font-size:12px;color:var(--ink4)}
+.rec-panel-body{padding:12px 12px;display:flex;flex-direction:column;gap:4px;max-height:400px;overflow-y:auto}
+.model-row{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:var(--r);transition:background 0.12s;cursor:default}
+.model-row:hover{background:var(--bg2)}
+.model-dot-lg{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.model-info{flex:1;min-width:0}
+.model-name{font-size:13px;font-weight:600;color:var(--ink2)}
+.model-company{font-size:11px;color:var(--ink4)}
+.model-badge{font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px;
+  background:var(--bg2);border:1px solid var(--border);color:var(--ink4)}
+.model-badge.best{background:var(--amber-light);border-color:rgba(245,166,35,0.3);color:#8A5608}
+.rec-panel-sep{height:1px;background:var(--border);margin:4px 0}
+.rec-panel-cat{font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink4);padding:6px 10px 2px}
+
+/* Soluciones panel */
+.sol-panel-body{padding:12px}
+.sol-panel-item{padding:12px 14px;border-radius:var(--r);border:1.5px solid var(--border);
+  margin-bottom:8px;transition:border-color 0.15s;cursor:default}
+.sol-panel-item:last-child{margin-bottom:0}
+.sol-panel-item:hover{border-color:var(--amber-ring);background:var(--amber-light)}
+.sol-panel-num{font-family:var(--f-display);font-size:11px;font-weight:700;color:var(--amber);letter-spacing:0.08em;margin-bottom:3px}
+.sol-panel-title{font-size:13px;font-weight:700;color:var(--ink);margin-bottom:4px;font-family:var(--f-display)}
+.sol-panel-desc{font-size:12px;color:var(--ink3);line-height:1.6}
+
+/* HERO VIDEO */
+#hero-video{
+  padding-top:var(--nav-h);background:var(--ink);position:relative;
+  overflow:hidden;min-height:100vh;display:flex;flex-direction:column;
+  align-items:center;justify-content:center}
+.hv-overlay{position:absolute;inset:0;
+  background:linear-gradient(to bottom,rgba(17,17,16,0.6) 0%,rgba(17,17,16,0.25) 40%,rgba(17,17,16,0.75) 100%);
+  z-index:2;pointer-events:none}
+.hv-content{position:relative;z-index:3;text-align:center;padding:60px 40px;max-width:700px}
+.hv-eyebrow{display:inline-flex;align-items:center;gap:7px;
+  background:rgba(245,166,35,0.15);border:1px solid rgba(245,166,35,0.3);
+  border-radius:var(--r-full);padding:5px 14px;font-size:12px;color:#FEBC2E;
+  font-weight:600;letter-spacing:0.04em;margin-bottom:28px;
+  animation:fadeUp 0.8s cubic-bezier(0.16,1,0.3,1) both}
+.hv-eyebrow-dot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:pdot2 2s infinite}
+@keyframes pdot2{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.3;transform:scale(1.8)}}
+.hv-title{font-family:var(--f-display);font-size:clamp(42px,6.5vw,78px);font-weight:800;
+  letter-spacing:-0.04em;line-height:1.0;color:#fff;margin-bottom:20px;
+  animation:fadeUp 0.8s 0.1s cubic-bezier(0.16,1,0.3,1) both}
+.hv-title em{font-style:normal;color:var(--amber)}
+.hv-sub{font-size:clamp(15px,2vw,18px);color:rgba(255,255,255,0.72);line-height:1.7;
+  max-width:460px;margin:0 auto 44px;
+  animation:fadeUp 0.8s 0.2s cubic-bezier(0.16,1,0.3,1) both}
+.hv-actions{animation:fadeUp 0.8s 0.3s cubic-bezier(0.16,1,0.3,1) both}
+.hv-video-wrap{position:absolute;inset:0;width:100%;height:100%}
+.hv-video-wrap video{width:177.78vh;min-width:100%;height:100%;min-height:56.25vw;
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);object-fit:cover}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
+
+/* SELL STRIP */
+#sell-strip{background:var(--white);border-bottom:1px solid var(--border);padding:44px 0}
+.sell-inner{display:flex;align-items:center;justify-content:space-between;gap:40px;flex-wrap:wrap}
+.sell-logo-side{display:flex;align-items:center;gap:16px;
+  font-family:var(--f-display);font-size:28px;font-weight:800;letter-spacing:-0.03em;color:var(--ink)}
+.sell-logo-side span{color:var(--amber)}
+.sell-tagline{font-family:var(--f-display);font-size:clamp(20px,2.8vw,30px);font-weight:800;
+  letter-spacing:-0.03em;color:var(--ink);max-width:420px;line-height:1.1}
+.sell-tagline em{font-style:normal;color:var(--amber)}
+.sell-desc{font-size:15px;color:var(--ink3);line-height:1.75;max-width:320px}
+@media(max-width:820px){.sell-inner{flex-direction:column;align-items:flex-start}}
+
+/* SCROLL STORY */
+#scroll-story{position:relative}
+.ss-wrapper{position:relative;height:500vh}
+.ss-sticky{position:sticky;top:var(--nav-h);height:calc(100vh - var(--nav-h));
+  display:flex;align-items:center;overflow:hidden;background:var(--white);
+  border-bottom:1px solid var(--border)}
+.ss-inner{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center;
+  max-width:1120px;margin:0 auto;padding:0 40px;width:100%}
+@media(max-width:900px){.ss-inner{grid-template-columns:1fr;gap:32px}.ss-right{display:none}}
+.ss-left{position:relative;min-height:280px;overflow:hidden}
+
+/* Step animations */
+.ss-step{
+  position:absolute;top:0;left:0;right:0;
+  opacity:0;transform:translateY(52px);filter:blur(2px);
+  transition:opacity 0.55s cubic-bezier(0.16,1,0.3,1),transform 0.55s cubic-bezier(0.16,1,0.3,1),filter 0.55s cubic-bezier(0.16,1,0.3,1);
+  pointer-events:none;will-change:transform,opacity,filter}
+.ss-step.active{opacity:1;transform:translateY(0);filter:blur(0px);pointer-events:auto;position:relative}
+.ss-step.exiting{
+  opacity:0;transform:translateY(-52px);filter:blur(2px);
+  transition:opacity 0.28s cubic-bezier(0.4,0,1,1),transform 0.28s cubic-bezier(0.4,0,1,1),filter 0.28s cubic-bezier(0.4,0,1,1);
+  position:absolute;pointer-events:none}
+.ss-panel{animation:panelIn 0.45s cubic-bezier(0.16,1,0.3,1) both}
+@keyframes panelIn{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+
+.ss-step-chip{margin-bottom:16px}
+.ss-step-h2{font-family:var(--f-display);font-size:clamp(26px,3.2vw,40px);font-weight:800;
+  letter-spacing:-0.035em;line-height:1.08;color:var(--ink);margin-bottom:16px}
+.ss-step-h2 em{font-style:normal;color:var(--amber)}
+.ss-step-p{font-size:15px;color:var(--ink3);line-height:1.8;max-width:420px;margin-bottom:24px}
+.ss-dots{display:flex;gap:8px;align-items:center;margin-top:28px}
+.ss-dot{width:8px;height:8px;border-radius:50%;background:var(--border2);transition:all 0.3s ease;cursor:pointer}
+.ss-dot.active{background:var(--amber);width:24px;border-radius:4px}
+
+.broken-tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:12px}
+.broken-tag{padding:4px 10px;border-radius:6px;font-size:12px;font-weight:600;border:1.5px solid var(--border)}
+.broken-tag.on{background:var(--amber-light);border-color:rgba(245,166,35,0.4);color:#8A5608}
+
+/* Mockup */
+.ss-right{position:relative}
+.ss-mockup{background:var(--white);border:1.5px solid var(--border);border-radius:var(--r3);box-shadow:var(--sh4);overflow:hidden}
+.ss-bar{background:var(--bg2);border-bottom:1.5px solid var(--border);padding:11px 14px;display:flex;align-items:center;gap:8px}
+.mac-dots{display:flex;gap:5px}
+.mac-dots span{width:10px;height:10px;border-radius:50%}
+.mac-dots span:nth-child(1){background:#FF5F57}
+.mac-dots span:nth-child(2){background:#FEBC2E}
+.mac-dots span:nth-child(3){background:#28C840}
+.ss-bar-title{font-size:12px;font-weight:600;color:var(--ink3);margin-left:4px}
+.ss-bar-status{margin-left:auto;font-size:11px;font-weight:700;color:var(--green);
+  background:var(--green-bg);border:1px solid var(--green-bd);padding:2px 9px;
+  border-radius:var(--r-full);display:flex;align-items:center;gap:4px}
+.ss-chat-body{padding:16px;display:flex;flex-direction:column;gap:11px;
+  min-height:280px;max-height:340px;overflow-y:auto}
+.ss-msg{display:flex;gap:9px;animation:msgSlide 0.35s cubic-bezier(0.16,1,0.3,1) both}
+@keyframes msgSlide{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.ss-msg.user{flex-direction:row-reverse}
+.ss-msg-av{width:28px;height:28px;border-radius:8px;display:flex;align-items:center;
+  justify-content:center;flex-shrink:0;font-size:12px;font-weight:700;
+  color:var(--ink3);background:var(--bg3);overflow:hidden}
+.ss-msg.ai .ss-msg-av{background:var(--amber-light);font-size:15px}
+.ss-msg-bbl{max-width:80%;padding:9px 13px;border-radius:11px;font-size:13px;line-height:1.65}
+.ss-msg.ai .ss-msg-bbl{background:var(--bg2);border:1px solid var(--border);color:var(--ink2)}
+.ss-msg.user .ss-msg-bbl{background:var(--amber);color:#fff;font-weight:500}
+.ss-typing{display:flex;gap:3px;padding:9px 13px;background:var(--bg2);border:1px solid var(--border);border-radius:11px}
+.ss-typing span{width:5px;height:5px;border-radius:50%;background:var(--ink4);animation:tdot2 1.2s infinite}
+.ss-typing span:nth-child(2){animation-delay:0.22s}
+.ss-typing span:nth-child(3){animation-delay:0.44s}
+@keyframes tdot2{0%,60%,100%{transform:translateY(0);opacity:0.35}30%{transform:translateY(-5px);opacity:1}}
+.ss-input-row{padding:10px 13px;border-top:1.5px solid var(--border);display:flex;gap:7px;align-items:center;background:var(--white)}
+.ss-inp{flex:1;background:var(--bg2);border:1.5px solid var(--border);border-radius:var(--r);
+  padding:7px 11px;font-size:13px;font-family:var(--f-body);color:var(--ink);outline:none}
+.ss-inp::placeholder{color:var(--ink4)}
+.ss-send{width:30px;height:30px;border-radius:8px;background:var(--amber);display:flex;
+  align-items:center;justify-content:center;cursor:pointer;color:#fff;font-size:13px;flex-shrink:0;border:none}
+
+/* Voice panel */
+.ss-voice-panel{padding:20px 16px;display:flex;flex-direction:column;align-items:center;gap:14px}
+.ss-voice-ring{width:72px;height:72px;border-radius:50%;background:var(--amber-light);
+  border:2px solid rgba(245,166,35,0.3);display:flex;align-items:center;
+  justify-content:center;font-size:28px;position:relative}
+.ss-voice-ring::before{content:'';position:absolute;inset:-8px;border-radius:50%;
+  border:2px solid rgba(245,166,35,0.2);animation:voiceRing 1.5s ease-in-out infinite}
+.ss-voice-ring::after{content:'';position:absolute;inset:-18px;border-radius:50%;
+  border:2px solid rgba(245,166,35,0.1);animation:voiceRing 1.5s 0.3s ease-in-out infinite}
+@keyframes voiceRing{0%,100%{transform:scale(1);opacity:0.6}50%{transform:scale(1.05);opacity:1}}
+.ss-voice-bars{display:flex;align-items:center;gap:3px;height:36px}
+.ss-vbar{width:4px;border-radius:99px;background:var(--amber)}
+.ss-vbar:nth-child(1){animation:vb 0.9s 0.0s ease-in-out infinite}
+.ss-vbar:nth-child(2){animation:vb 0.9s 0.1s ease-in-out infinite}
+.ss-vbar:nth-child(3){animation:vb 0.9s 0.2s ease-in-out infinite}
+.ss-vbar:nth-child(4){animation:vb 0.9s 0.3s ease-in-out infinite}
+.ss-vbar:nth-child(5){animation:vb 0.9s 0.15s ease-in-out infinite}
+.ss-vbar:nth-child(6){animation:vb 0.9s 0.35s ease-in-out infinite}
+.ss-vbar:nth-child(7){animation:vb 0.9s 0.05s ease-in-out infinite}
+@keyframes vb{0%,100%{height:8px;opacity:0.3}50%{height:32px;opacity:1}}
+.ss-voice-text{font-size:13px;color:var(--ink3);font-style:italic;text-align:center;max-width:240px}
+
+/* Files panel */
+.ss-files{padding:14px;display:flex;flex-direction:column;gap:8px}
+.ss-file-row{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:var(--r);
+  border:1.5px solid var(--border);background:var(--bg);transition:border-color 0.15s}
+.ss-file-row.analyzing{border-color:var(--amber);background:var(--amber-light)}
+.ss-file-icon{width:30px;height:30px;border-radius:8px;background:var(--bg2);
+  display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
+.ss-file-name{flex:1;font-size:13px;color:var(--ink2);font-weight:500}
+.ss-file-st{font-size:11px;font-weight:700}
+.ss-file-st.done{color:var(--green)}
+.ss-file-st.proc{color:var(--amber)}
+.ss-file-prog{height:3px;background:var(--border);border-radius:99px;margin-top:4px;overflow:hidden}
+.ss-file-prog-fill{height:100%;background:var(--amber);border-radius:99px;width:0;transition:width 2s ease}
+.ss-mode-bar{padding:8px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px;background:var(--bg2)}
+.ss-mode-chip{padding:4px 10px;border-radius:6px;font-size:11px;font-weight:700;
+  border:1.5px solid var(--border);background:var(--white);color:var(--ink3);cursor:pointer;transition:all 0.15s}
+.ss-mode-chip.active{background:var(--amber);border-color:var(--amber-d);color:#fff}
+
+/* History panel */
+.ss-history{padding:12px;display:flex;flex-direction:column;gap:5px}
+.ss-hist-item{display:flex;align-items:center;gap:9px;padding:9px 11px;border-radius:var(--r);
+  border-left:3px solid transparent;transition:all 0.15s;cursor:pointer}
+.ss-hist-item:hover{background:var(--bg2)}
+.ss-hist-item.active{background:var(--amber-light);border-left-color:var(--amber)}
+.ss-hist-icon{font-size:14px;flex-shrink:0}
+.ss-hist-meta{flex:1;min-width:0}
+.ss-hist-title{font-size:13px;font-weight:600;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ss-hist-time{font-size:11px;color:var(--ink4);margin-top:1px}
+
+/* PRICING */
+#pricing{padding:88px 0;background:var(--white)}
+.pricing-header{text-align:center;margin-bottom:52px}
+.pricing-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;align-items:start}
+@media(max-width:1000px){.pricing-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:580px){.pricing-grid{grid-template-columns:1fr}}
+.pricing-card{background:var(--white);border:1.5px solid var(--border);border-radius:var(--r3);padding:24px;transition:all 0.2s;position:relative}
+.pricing-card.popular{border-color:var(--amber);box-shadow:var(--sh-amber)}
+.popular-badge{position:absolute;top:-13px;left:50%;transform:translateX(-50%);
+  background:var(--amber);color:#fff;font-size:11px;font-weight:700;
+  padding:4px 14px;border-radius:var(--r-full);white-space:nowrap}
+.pc-plan{font-family:var(--f-display);font-size:13px;font-weight:700;letter-spacing:0.04em;
+  text-transform:uppercase;color:var(--ink3);margin-bottom:10px}
+.pc-price{display:flex;align-items:flex-end;gap:3px;margin-bottom:6px}
+.pc-price .amt{font-family:var(--f-display);font-size:38px;font-weight:800;color:var(--ink);letter-spacing:-0.04em}
+.pc-price .curr{font-family:var(--f-display);font-size:16px;font-weight:700;color:var(--ink3);margin-bottom:7px}
+.pc-price .per{font-size:13px;color:var(--ink4);margin-bottom:5px}
+.pc-desc{font-size:13px;color:var(--ink3);margin-bottom:18px;line-height:1.6}
+.pc-cta{width:100%;padding:12px;border-radius:var(--r2);font-size:14px;font-weight:700;
+  cursor:pointer;transition:all 0.18s;font-family:var(--f-body);border:none;margin-bottom:18px}
+.pricing-card.popular .pc-cta{background:var(--amber);color:#fff;box-shadow:0 2px 0 var(--amber-d)}
+.pricing-card.popular .pc-cta:hover{background:#e89b18;transform:translateY(-1px)}
+.pricing-card:not(.popular) .pc-cta{background:var(--bg2);color:var(--ink);border:1.5px solid var(--border)}
+.pricing-card:not(.popular) .pc-cta:hover{background:var(--bg3)}
+.pc-sep{height:1px;background:var(--border);margin-bottom:16px}
+.pc-features{display:flex;flex-direction:column;gap:8px}
+.pcf-item{display:flex;align-items:flex-start;gap:9px;font-size:13px;color:var(--ink2)}
+.pcf-item .check{color:var(--green);flex-shrink:0;margin-top:1px}
+.pricing-note{text-align:center;margin-top:28px;font-size:13px;color:var(--ink4);
+  display:flex;gap:8px;align-items:center;justify-content:center}
+
+/* CTA FINAL */
+#cta-final{padding:100px 0;background:var(--bg);text-align:center}
+.cta-box{background:var(--amber-light);border:2px solid rgba(245,166,35,0.3);
+  border-radius:var(--r3);padding:60px 40px;max-width:600px;margin:0 auto;
+  position:relative;overflow:hidden}
+.cta-box::before{content:'';position:absolute;top:-60px;right:-60px;
+  width:200px;height:200px;border-radius:50%;background:rgba(245,166,35,0.12)}
+
+/* FOOTER */
+#footer{background:var(--ink);color:rgba(255,255,255,0.6);padding:60px 0 36px}
+.footer-inner{display:grid;grid-template-columns:2fr 1fr 1fr;gap:60px;margin-bottom:48px}
+@media(max-width:800px){.footer-inner{grid-template-columns:1fr 1fr;gap:40px}}
+.footer-brand-name{font-family:var(--f-display);font-size:16px;font-weight:800;color:#fff;margin-bottom:12px}
+.footer-brand-name span{color:var(--amber)}
+.footer-brand-desc{font-size:13px;line-height:1.7;max-width:280px}
+.footer-col-title{font-size:11px;font-weight:700;letter-spacing:0.1em;
+  text-transform:uppercase;color:rgba(255,255,255,0.35);margin-bottom:16px}
+.footer-links{display:flex;flex-direction:column;gap:10px}
+.footer-links a{font-size:13px;color:rgba(255,255,255,0.5);transition:color 0.12s}
+.footer-links a:hover{color:#fff}
+.footer-bottom{border-top:1px solid rgba(255,255,255,0.08);padding-top:24px;
+  display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
+.footer-copy{font-size:12px}
+.footer-legal{display:flex;gap:20px}
+.footer-legal a{font-size:12px;color:rgba(255,255,255,0.4)}
+.footer-legal a:hover{color:#fff}
+
+/* PAYMENT MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(17,17,16,0.7);z-index:1000;
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;pointer-events:none;transition:opacity 0.2s;backdrop-filter:blur(8px)}
+.modal-overlay.open{opacity:1;pointer-events:auto}
+.modal-box{background:var(--white);border-radius:var(--r3);padding:36px;
+  max-width:460px;width:90%;box-shadow:var(--sh4);
+  transform:scale(0.96);transition:transform 0.2s;position:relative;
+  max-height:90vh;overflow-y:auto}
+.modal-overlay.open .modal-box{transform:scale(1)}
+.modal-close{position:absolute;top:14px;right:14px;background:var(--bg2);border:none;
+  width:30px;height:30px;border-radius:50%;cursor:pointer;font-size:18px;
+  display:flex;align-items:center;justify-content:center;color:var(--ink3)}
+.modal-close:hover{background:var(--border2)}
+.pay-modal h2{font-family:var(--f-display);font-size:20px;font-weight:800;margin-bottom:4px}
+.pay-modal h2 span{color:var(--amber)}
+.plan-badge{display:inline-flex;align-items:center;gap:6px;background:var(--amber-light);
+  color:#8A5608;border:1px solid rgba(245,166,35,0.3);border-radius:var(--r-full);
+  padding:4px 12px;font-size:12px;font-weight:700;margin-bottom:20px}
+.pay-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+.pay-full{margin-bottom:12px}
+.pay-label{font-size:12px;font-weight:600;color:var(--ink3);margin-bottom:5px;letter-spacing:0.02em}
+.pay-field{width:100%;padding:11px 14px;border:1.5px solid var(--border);border-radius:var(--r);
+  font-family:var(--f-body);font-size:14px;color:var(--ink);outline:none;
+  transition:border-color 0.15s;background:var(--white)}
+.pay-field:focus{border-color:var(--amber);box-shadow:0 0 0 3px var(--amber-glow)}
+.pay-card-wrap{position:relative}
+.pay-card-icon{position:absolute;right:12px;top:50%;transform:translateY(-50%);font-size:18px}
+.pay-sep{display:flex;align-items:center;gap:12px;margin:16px 0;color:var(--ink4);font-size:13px}
+.pay-sep::before,.pay-sep::after{content:'';flex:1;height:1px;background:var(--border)}
+.pay-secure{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--ink4);justify-content:center;margin-top:14px}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="nav">
+  <div class="wrap">
+    <div class="nav-inner">
+      <a href="#" class="nav-logo">Mult<span>IA</span></a>
+
+      <div class="nav-menu">
+        <div class="nav-dd" id="dd-conoce">
+          <button class="nav-dd-btn" onclick="toggleDD('dd-conoce')">
+            Conoce más de MultIA
+            <svg width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          </button>
+          <div class="nav-dd-panel wide" id="panel-conoce">
+            <div class="conoce-header">
+              <div class="conoce-header-logo">
+                <span class="conoce-header-name">Mult<span>IA</span></span>
+              </div>
+              <p class="conoce-header-desc">La plataforma que unifica los mejores modelos de IA en una sola experiencia fluida y poderosa.</p>
+            </div>
+            <div class="accordion-item">
+              <button class="accordion-btn" onclick="toggleAcc(this)">
+                ¿Qué es MultIA?
+                <svg width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+              </button>
+              <div class="accordion-body">
+                MultIA es una plataforma todo-en-uno que te da acceso a los mejores modelos de IA — GPT-4, Claude, Gemini y más — desde una sola interfaz. Sin múltiples cuentas ni pagos.
+                <div class="acc-tags">
+                  <span class="acc-tag">Unificado</span>
+                  <span class="acc-tag">Fácil de usar</span>
+                  <span class="acc-tag">Asequible</span>
+                </div>
+              </div>
+            </div>
+            <div class="accordion-item">
+              <button class="accordion-btn" onclick="toggleAcc(this)">
+                Modelos disponibles
+                <svg width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+              </button>
+              <div class="accordion-body">
+                Accede a GPT-4o, Claude 3.5, Gemini 1.5 Pro, Llama 3.1 y más modelos líderes del mercado, todos en un solo lugar.
+                <div class="acc-tags">
+                  <span class="acc-tag">GPT-4o</span>
+                  <span class="acc-tag">Claude 3.5</span>
+                  <span class="acc-tag">Gemini 1.5</span>
+                  <span class="acc-tag">Llama 3.1</span>
+                  <span class="acc-tag">+10 más</span>
+                </div>
+              </div>
+            </div>
+            <div class="accordion-item">
+              <button class="accordion-btn" onclick="toggleAcc(this)">
+                Casos de uso
+                <svg width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+              </button>
+              <div class="accordion-body">
+                Redacción, análisis de datos, código, traducción, resúmenes, atención al cliente y mucho más. MultIA se adapta a cualquier flujo de trabajo.
+                <div class="acc-tags">
+                  <span class="acc-tag">Redacción</span>
+                  <span class="acc-tag">Análisis</span>
+                  <span class="acc-tag">Código</span>
+                  <span class="acc-tag">Educación</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="nav-dd" id="dd-recursos">
+          <button class="nav-dd-btn" onclick="toggleDD('dd-recursos')">
+            Recursos
+            <svg width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          </button>
+          <div class="nav-dd-panel" id="panel-recursos">
+            <div class="rec-panel-header">
+              <div class="rec-panel-header-title">Modelos de IA disponibles</div>
+              <div class="rec-panel-header-sub">Actualizado · Abril 2026</div>
+            </div>
+            <div class="rec-panel-body">
+              <div class="rec-panel-cat">Generación de texto</div>
+              <div class="model-row">
+                <div class="model-dot-lg" style="background:#10A37F"></div>
+                <div class="model-info"><div class="model-name">GPT-4o</div><div class="model-company">OpenAI</div></div>
+                <span class="model-badge best">★ Mejor</span>
+              </div>
+              <div class="model-row">
+                <div class="model-dot-lg" style="background:#CC785C"></div>
+                <div class="model-info"><div class="model-name">Claude 3.5 Sonnet</div><div class="model-company">Anthropic</div></div>
+                <span class="model-badge">Popular</span>
+              </div>
+              <div class="model-row">
+                <div class="model-dot-lg" style="background:#4285F4"></div>
+                <div class="model-info"><div class="model-name">Gemini 1.5 Pro</div><div class="model-company">Google</div></div>
+                <span class="model-badge">Nuevo</span>
+              </div>
+              <div class="rec-panel-sep"></div>
+              <div class="rec-panel-cat">Código y razonamiento</div>
+              <div class="model-row">
+                <div class="model-dot-lg" style="background:#0066FF"></div>
+                <div class="model-info"><div class="model-name">Llama 3.1 70B</div><div class="model-company">Meta</div></div>
+                <span class="model-badge">Open source</span>
+              </div>
+              <div class="model-row">
+                <div class="model-dot-lg" style="background:#FF7000"></div>
+                <div class="model-info"><div class="model-name">Mistral Large</div><div class="model-company">Mistral AI</div></div>
+                <span class="model-badge">Rápido</span>
+              </div>
+              <div class="rec-panel-sep"></div>
+              <div class="rec-panel-cat">Imágenes</div>
+              <div class="model-row">
+                <div class="model-dot-lg" style="background:#9333EA"></div>
+                <div class="model-info"><div class="model-name">DALL·E 3</div><div class="model-company">OpenAI</div></div>
+                <span class="model-badge best">★ Mejor</span>
+              </div>
+              <div class="model-row">
+                <div class="model-dot-lg" style="background:#E11D48"></div>
+                <div class="model-info"><div class="model-name">Stable Diffusion XL</div><div class="model-company">Stability AI</div></div>
+                <span class="model-badge">Open source</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="nav-dd" id="dd-soluciones">
+          <button class="nav-dd-btn" onclick="toggleDD('dd-soluciones')">
+            Soluciones
+            <svg width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          </button>
+          <div class="nav-dd-panel" id="panel-soluciones">
+            <div class="sol-panel-body">
+              <div class="sol-panel-item">
+                <div class="sol-panel-num">01</div>
+                <div class="sol-panel-title">Para empresas</div>
+                <div class="sol-panel-desc">Gestión centralizada, permisos por equipo y análisis de uso avanzado para organizaciones.</div>
+              </div>
+              <div class="sol-panel-item">
+                <div class="sol-panel-num">02</div>
+                <div class="sol-panel-title">Para desarrolladores</div>
+                <div class="sol-panel-desc">API unificada para todos los modelos con una sola clave y documentación clara.</div>
+              </div>
+              <div class="sol-panel-item">
+                <div class="sol-panel-num">03</div>
+                <div class="sol-panel-title">Para educación</div>
+                <div class="sol-panel-desc">Herramientas para estudiantes y docentes con controles de uso y contenido seguro.</div>
+              </div>
+              <div class="sol-panel-item">
+                <div class="sol-panel-num">04</div>
+                <div class="sol-panel-title">Para creativos</div>
+                <div class="sol-panel-desc">Escritura, diseño de prompts y generación de contenido para creadores y artistas.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="nav-actions">
+        <button class="btn" style="background:none;color:var(--ink3);font-size:14px;padding:8px 16px;border-radius:var(--r);">Iniciar sesión</button>
+        <button class="btn btn-amber" onclick="openModal('pro')">Comenzar gratis</button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO VIDEO -->
+<section id="hero-video">
+  <div class="hv-video-wrap">
+    <video autoplay muted loop playsinline poster="">
+      <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
+    </video>
+  </div>
+  <div class="hv-overlay"></div>
+  <div class="hv-content">
+    <div class="hv-eyebrow">
+      <span class="hv-eyebrow-dot"></span>
+      Lanzamiento 2026 · MultIA Beta
+    </div>
+    <h1 class="hv-title">Todos los modelos<br/><em>en un solo lugar</em></h1>
+    <p class="hv-sub">Accede a GPT-4, Claude, Gemini y más con una sola suscripción. Sin cambiar de pestaña, sin múltiples pagos.</p>
+    <div class="hv-actions">
+      <button class="btn btn-amber lg" onclick="openModal('pro')">Comenzar gratis →</button>
+    </div>
+  </div>
+</section>
+
+<!-- SELL STRIP -->
+<section id="sell-strip">
+  <div class="wrap">
+    <div class="sell-inner">
+      <div class="sell-logo-side">Mult<span>IA</span></div>
+      <p class="sell-tagline">Una plataforma.<br/><em>Infinitas posibilidades.</em></p>
+      <p class="sell-desc">MultIA unifica los mejores modelos de inteligencia artificial en una experiencia fluida, poderosa y asequible.</p>
+    </div>
+  </div>
+</section>
+
+<!-- SCROLL STORY -->
+<section id="scroll-story">
+  <div class="ss-wrapper">
+    <div class="ss-sticky">
+      <div class="ss-inner">
+        <div class="ss-left">
+
+          <div class="ss-step active" data-step="0">
+            <div class="ss-step-chip"><span class="chip chip-amber chip-dot">Chat inteligente</span></div>
+            <h2 class="ss-step-h2">Chatea con<br/><em>cualquier modelo</em></h2>
+            <p class="ss-step-p">Elige entre GPT-4o, Claude 3.5, Gemini 1.5 y más. Cambia de modelo en un clic y compara respuestas al instante.</p>
+            <div class="broken-tags">
+              <span class="broken-tag on">GPT-4o</span>
+              <span class="broken-tag on">Claude 3.5</span>
+              <span class="broken-tag on">Gemini Pro</span>
+              <span class="broken-tag">Llama 3.1</span>
+            </div>
+            <div class="ss-dots">
+              <div class="ss-dot active" onclick="goStep(0)"></div>
+              <div class="ss-dot" onclick="goStep(1)"></div>
+              <div class="ss-dot" onclick="goStep(2)"></div>
+              <div class="ss-dot" onclick="goStep(3)"></div>
+              <div class="ss-dot" onclick="goStep(4)"></div>
+            </div>
+          </div>
+
+          <div class="ss-step" data-step="1">
+            <div class="ss-step-chip"><span class="chip chip-amber chip-dot">Voz a texto</span></div>
+            <h2 class="ss-step-h2">Habla,<br/><em>no solo escribas</em></h2>
+            <p class="ss-step-p">Dicta tus preguntas con el micrófono y recibe respuestas al instante. La IA entiende tu idioma y acento natural.</p>
+            <div class="broken-tags">
+              <span class="broken-tag on">Español</span>
+              <span class="broken-tag on">Inglés</span>
+              <span class="broken-tag on">Portugués</span>
+              <span class="broken-tag">+50 idiomas</span>
+            </div>
+            <div class="ss-dots">
+              <div class="ss-dot" onclick="goStep(0)"></div>
+              <div class="ss-dot active" onclick="goStep(1)"></div>
+              <div class="ss-dot" onclick="goStep(2)"></div>
+              <div class="ss-dot" onclick="goStep(3)"></div>
+              <div class="ss-dot" onclick="goStep(4)"></div>
+            </div>
+          </div>
+
+          <div class="ss-step" data-step="2">
+            <div class="ss-step-chip"><span class="chip chip-amber chip-dot">Análisis de archivos</span></div>
+            <h2 class="ss-step-h2">Analiza docs<br/><em>al instante</em></h2>
+            <p class="ss-step-p">Sube PDFs, Word, Excel o imágenes. La IA lee, resume y responde preguntas sobre tu contenido en segundos.</p>
+            <div class="broken-tags">
+              <span class="broken-tag on">PDF</span>
+              <span class="broken-tag on">DOCX</span>
+              <span class="broken-tag on">XLSX</span>
+              <span class="broken-tag on">Imágenes</span>
+            </div>
+            <div class="ss-dots">
+              <div class="ss-dot" onclick="goStep(0)"></div>
+              <div class="ss-dot" onclick="goStep(1)"></div>
+              <div class="ss-dot active" onclick="goStep(2)"></div>
+              <div class="ss-dot" onclick="goStep(3)"></div>
+              <div class="ss-dot" onclick="goStep(4)"></div>
+            </div>
+          </div>
+
+          <div class="ss-step" data-step="3">
+            <div class="ss-step-chip"><span class="chip chip-amber chip-dot">Modos de trabajo</span></div>
+            <h2 class="ss-step-h2">Cambia de modo<br/><em>en un clic</em></h2>
+            <p class="ss-step-p">Chat libre, modo redacción, modo código o modo resumen. Optimiza la IA para cada tarea específica.</p>
+            <div class="broken-tags">
+              <span class="broken-tag on">Redacción</span>
+              <span class="broken-tag on">Código</span>
+              <span class="broken-tag on">Resumen</span>
+              <span class="broken-tag">Análisis</span>
+            </div>
+            <div class="ss-dots">
+              <div class="ss-dot" onclick="goStep(0)"></div>
+              <div class="ss-dot" onclick="goStep(1)"></div>
+              <div class="ss-dot" onclick="goStep(2)"></div>
+              <div class="ss-dot active" onclick="goStep(3)"></div>
+              <div class="ss-dot" onclick="goStep(4)"></div>
+            </div>
+          </div>
+
+          <div class="ss-step" data-step="4">
+            <div class="ss-step-chip"><span class="chip chip-amber chip-dot">Historial completo</span></div>
+            <h2 class="ss-step-h2">Todo tu historial<br/><em>siempre disponible</em></h2>
+            <p class="ss-step-p">Accede a todas tus conversaciones anteriores. Busca por tema, fecha o modelo. Tu memoria de IA, siempre contigo.</p>
+            <div class="broken-tags">
+              <span class="broken-tag on">Búsqueda</span>
+              <span class="broken-tag on">Filtros</span>
+              <span class="broken-tag on">Exportar</span>
+              <span class="broken-tag">Compartir</span>
+            </div>
+            <div class="ss-dots">
+              <div class="ss-dot" onclick="goStep(0)"></div>
+              <div class="ss-dot" onclick="goStep(1)"></div>
+              <div class="ss-dot" onclick="goStep(2)"></div>
+              <div class="ss-dot" onclick="goStep(3)"></div>
+              <div class="ss-dot active" onclick="goStep(4)"></div>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="ss-right">
+          <div class="ss-mockup">
+
+            <!-- Panel 0: Chat -->
+            <div id="mock-0" class="ss-panel">
+              <div class="ss-bar">
+                <div class="mac-dots"><span></span><span></span><span></span></div>
+                <span class="ss-bar-title">MultIA · GPT-4o</span>
+                <span class="ss-bar-status">● En línea</span>
+              </div>
+              <div class="ss-chat-body">
+                <div class="ss-msg ai">
+                  <div class="ss-msg-av">🤖</div>
+                  <div class="ss-msg-bbl">¡Hola! Soy MultIA. Tengo GPT-4o, Claude 3.5 y Gemini disponibles. ¿Con cuál quieres trabajar hoy?</div>
+                </div>
+                <div class="ss-msg user">
+                  <div class="ss-msg-av">D</div>
+                  <div class="ss-msg-bbl">Quiero usar Claude para redactar un correo profesional</div>
+                </div>
+                <div class="ss-msg ai">
+                  <div class="ss-msg-av">🤖</div>
+                  <div class="ss-msg-bbl">Cambiando a <strong>Claude 3.5 Sonnet</strong>. ¿A quién va dirigido el correo y cuál es el mensaje principal?</div>
+                </div>
+                <div class="ss-msg user">
+                  <div class="ss-msg-av">D</div>
+                  <div class="ss-msg-bbl">A mi cliente para avisar un retraso en la entrega</div>
+                </div>
+                <div class="ss-msg ai">
+                  <div class="ss-msg-av">🤖</div>
+                  <div class="ss-msg-bbl"><div class="ss-typing"><span></span><span></span><span></span></div></div>
+                </div>
+              </div>
+              <div class="ss-input-row">
+                <input class="ss-inp" placeholder="Escribe un mensaje..." readonly>
+                <button class="ss-send">↑</button>
+              </div>
+            </div>
+
+            <!-- Panel 1: Voice -->
+            <div id="mock-1" class="ss-panel" style="display:none">
+              <div class="ss-bar">
+                <div class="mac-dots"><span></span><span></span><span></span></div>
+                <span class="ss-bar-title">MultIA · Modo Voz</span>
+                <span class="ss-bar-status">● Escuchando</span>
+              </div>
+              <div class="ss-voice-panel">
+                <div class="ss-voice-ring">🎤</div>
+                <div class="ss-voice-bars">
+                  <div class="ss-vbar"></div><div class="ss-vbar"></div><div class="ss-vbar"></div>
+                  <div class="ss-vbar"></div><div class="ss-vbar"></div><div class="ss-vbar"></div>
+                  <div class="ss-vbar"></div>
+                </div>
+                <p class="ss-voice-text">"Escuchando… di tu pregunta y responderé al instante"</p>
+              </div>
+              <div class="ss-chat-body" style="min-height:100px;max-height:160px">
+                <div class="ss-msg ai">
+                  <div class="ss-msg-av">🤖</div>
+                  <div class="ss-msg-bbl">Modo voz activado. Habla en español, inglés o cualquiera de los 50+ idiomas disponibles.</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Panel 2: Files -->
+            <div id="mock-2" class="ss-panel" style="display:none">
+              <div class="ss-bar">
+                <div class="mac-dots"><span></span><span></span><span></span></div>
+                <span class="ss-bar-title">MultIA · Análisis de archivos</span>
+                <span class="ss-bar-status">● Procesando</span>
+              </div>
+              <div class="ss-files">
+                <div class="ss-file-row analyzing">
+                  <div class="ss-file-icon">📄</div>
+                  <div style="flex:1">
+                    <div class="ss-file-name">Contrato_2026.pdf</div>
+                    <div class="ss-file-prog"><div class="ss-file-prog-fill" id="prog-fill" style="width:0%"></div></div>
+                  </div>
+                  <span class="ss-file-st proc">Analizando…</span>
+                </div>
+                <div class="ss-file-row">
+                  <div class="ss-file-icon">📊</div>
+                  <div style="flex:1"><div class="ss-file-name">Ventas_Q1.xlsx</div></div>
+                  <span class="ss-file-st done">✓ Listo</span>
+                </div>
+                <div class="ss-file-row">
+                  <div class="ss-file-icon">🖼️</div>
+                  <div style="flex:1"><div class="ss-file-name">Diseño_v3.png</div></div>
+                  <span class="ss-file-st done">✓ Listo</span>
+                </div>
+              </div>
+              <div class="ss-input-row">
+                <input class="ss-inp" placeholder="Pregunta sobre tus archivos..." readonly>
+                <button class="ss-send">↑</button>
+              </div>
+            </div>
+
+            <!-- Panel 3: Mode switching -->
+            <div id="mock-3" class="ss-panel" style="display:none">
+              <div class="ss-bar">
+                <div class="mac-dots"><span></span><span></span><span></span></div>
+                <span class="ss-bar-title">MultIA · Modo Redacción</span>
+                <span class="ss-bar-status">● Activo</span>
+              </div>
+              <div class="ss-mode-bar">
+                <span class="ss-mode-chip">Chat libre</span>
+                <span class="ss-mode-chip active">Redacción</span>
+                <span class="ss-mode-chip">Código</span>
+                <span class="ss-mode-chip">Resumen</span>
+              </div>
+              <div class="ss-chat-body">
+                <div class="ss-msg ai">
+                  <div class="ss-msg-av">🤖</div>
+                  <div class="ss-msg-bbl">Modo <strong>Redacción</strong> activado. Optimizado para textos profesionales, creativos o técnicos. ¿Qué necesitas escribir?</div>
+                </div>
+                <div class="ss-msg user">
+                  <div class="ss-msg-av">D</div>
+                  <div class="ss-msg-bbl">Una propuesta comercial para un cliente de tecnología</div>
+                </div>
+                <div class="ss-msg ai">
+                  <div class="ss-msg-av">🤖</div>
+                  <div class="ss-msg-bbl"><div class="ss-typing"><span></span><span></span><span></span></div></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Panel 4: History -->
+            <div id="mock-4" class="ss-panel" style="display:none">
+              <div class="ss-bar">
+                <div class="mac-dots"><span></span><span></span><span></span></div>
+                <span class="ss-bar-title">MultIA · Historial</span>
+                <span class="ss-bar-status">● 24 conversaciones</span>
+              </div>
+              <div class="ss-history">
+                <div class="ss-hist-item active">
+                  <div class="ss-hist-icon">💼</div>
+                  <div class="ss-hist-meta">
+                    <div class="ss-hist-title">Propuesta comercial cliente TechCorp</div>
+                    <div class="ss-hist-time">Hace 2 horas · Claude 3.5</div>
+                  </div>
+                </div>
+                <div class="ss-hist-item">
+                  <div class="ss-hist-icon">📊</div>
+                  <div class="ss-hist-meta">
+                    <div class="ss-hist-title">Análisis de ventas Q1 2026</div>
+                    <div class="ss-hist-time">Ayer · GPT-4o</div>
+                  </div>
+                </div>
+                <div class="ss-hist-item">
+                  <div class="ss-hist-icon">🖥️</div>
+                  <div class="ss-hist-meta">
+                    <div class="ss-hist-title">Código React: componente de login</div>
+                    <div class="ss-hist-time">Hace 2 días · GPT-4o</div>
+                  </div>
+                </div>
+                <div class="ss-hist-item">
+                  <div class="ss-hist-icon">📝</div>
+                  <div class="ss-hist-meta">
+                    <div class="ss-hist-title">Resumen contrato proveedor</div>
+                    <div class="ss-hist-time">Hace 3 días · Claude 3.5</div>
+                  </div>
+                </div>
+                <div class="ss-hist-item">
+                  <div class="ss-hist-icon">🌐</div>
+                  <div class="ss-hist-meta">
+                    <div class="ss-hist-title">Traducción al inglés · informe anual</div>
+                    <div class="ss-hist-time">Hace 5 días · Gemini 1.5</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section id="pricing">
+  <div class="wrap">
+    <div class="pricing-header rv">
+      <span class="chip chip-amber chip-dot" style="margin-bottom:16px">Precios simples</span>
+      <h2 class="ttl" style="margin-bottom:12px">Elige tu plan</h2>
+      <p class="lead">Sin sorpresas. Sin contratos. Cancela cuando quieras.</p>
+    </div>
+    <div class="pricing-grid">
+      <div class="pricing-card rv d1">
+        <div class="pc-plan">Gratis</div>
+        <div class="pc-price"><span class="curr">$</span><span class="amt">0</span><span class="per">/mes</span></div>
+        <p class="pc-desc">Para explorar MultIA sin compromiso.</p>
+        <button class="pc-cta" onclick="openModal('free')">Comenzar gratis</button>
+        <div class="pc-sep"></div>
+        <div class="pc-features">
+          <div class="pcf-item"><span class="check">✓</span>50 mensajes al mes</div>
+          <div class="pcf-item"><span class="check">✓</span>Acceso a GPT-3.5</div>
+          <div class="pcf-item"><span class="check">✓</span>Historial 7 días</div>
+          <div class="pcf-item"><span class="check">✓</span>1 archivo por conversación</div>
+        </div>
+      </div>
+      <div class="pricing-card popular rv d2">
+        <div class="popular-badge">⭐ Más popular</div>
+        <div class="pc-plan">Pro</div>
+        <div class="pc-price"><span class="curr">$</span><span class="amt">19</span><span class="per">/mes</span></div>
+        <p class="pc-desc">Para profesionales que usan IA a diario.</p>
+        <button class="pc-cta" onclick="openModal('pro')">Empezar ahora</button>
+        <div class="pc-sep"></div>
+        <div class="pc-features">
+          <div class="pcf-item"><span class="check">✓</span>Mensajes ilimitados</div>
+          <div class="pcf-item"><span class="check">✓</span>GPT-4o + Claude 3.5 + Gemini</div>
+          <div class="pcf-item"><span class="check">✓</span>Historial ilimitado</div>
+          <div class="pcf-item"><span class="check">✓</span>Análisis de archivos</div>
+          <div class="pcf-item"><span class="check">✓</span>Modo voz</div>
+          <div class="pcf-item"><span class="check">✓</span>Soporte prioritario</div>
+        </div>
+      </div>
+      <div class="pricing-card rv d3">
+        <div class="pc-plan">Business</div>
+        <div class="pc-price"><span class="curr">$</span><span class="amt">49</span><span class="per">/mes</span></div>
+        <p class="pc-desc">Para equipos que necesitan más potencia.</p>
+        <button class="pc-cta" onclick="openModal('business')">Comenzar</button>
+        <div class="pc-sep"></div>
+        <div class="pc-features">
+          <div class="pcf-item"><span class="check">✓</span>Todo lo del plan Pro</div>
+          <div class="pcf-item"><span class="check">✓</span>Hasta 5 usuarios</div>
+          <div class="pcf-item"><span class="check">✓</span>Panel de administración</div>
+          <div class="pcf-item"><span class="check">✓</span>Acceso a la API</div>
+          <div class="pcf-item"><span class="check">✓</span>Modelos premium</div>
+        </div>
+      </div>
+      <div class="pricing-card rv d4">
+        <div class="pc-plan">Enterprise</div>
+        <div class="pc-price"><span class="amt" style="font-size:28px">Custom</span></div>
+        <p class="pc-desc">Para organizaciones con necesidades avanzadas.</p>
+        <button class="pc-cta">Contactar ventas</button>
+        <div class="pc-sep"></div>
+        <div class="pc-features">
+          <div class="pcf-item"><span class="check">✓</span>Todo lo del plan Business</div>
+          <div class="pcf-item"><span class="check">✓</span>Usuarios ilimitados</div>
+          <div class="pcf-item"><span class="check">✓</span>SLA garantizado</div>
+          <div class="pcf-item"><span class="check">✓</span>Implementación on-premise</div>
+          <div class="pcf-item"><span class="check">✓</span>Soporte 24/7 dedicado</div>
+        </div>
+      </div>
+    </div>
+    <div class="pricing-note">🔒 Pago seguro · Cancela en cualquier momento · Sin cargos ocultos</div>
+  </div>
+</section>
+
+<!-- CTA FINAL -->
+<section id="cta-final">
+  <div class="wrap">
+    <div class="cta-box rv">
+      <span class="chip chip-amber chip-dot" style="margin-bottom:20px">Empieza hoy</span>
+      <h2 class="ttl" style="margin-bottom:12px">Únete a miles de usuarios<br/>que trabajan más inteligente</h2>
+      <p class="lead" style="margin-bottom:32px;max-width:420px;margin-left:auto;margin-right:auto">Prueba MultIA gratis por 14 días. Sin tarjeta de crédito requerida.</p>
+      <button class="btn btn-amber lg" onclick="openModal('pro')">Crear cuenta gratuita →</button>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer id="footer">
+  <div class="wrap">
+    <div class="footer-inner">
+      <div>
+        <div class="footer-brand-name">Mult<span>IA</span></div>
+        <p class="footer-brand-desc">La plataforma que unifica los mejores modelos de inteligencia artificial. GPT-4, Claude, Gemini y más en un solo lugar.</p>
+      </div>
+      <div>
+        <div class="footer-col-title">Producto</div>
+        <div class="footer-links">
+          <a href="#">Funciones</a>
+          <a href="#">Precios</a>
+          <a href="#">Integraciones</a>
+          <a href="#">Novedades</a>
+          <a href="#">API</a>
+        </div>
+      </div>
+      <div>
+        <div class="footer-col-title">Empresa</div>
+        <div class="footer-links">
+          <a href="#">Sobre nosotros</a>
+          <a href="#">Blog</a>
+          <a href="#">Prensa</a>
+          <a href="#">Carreras</a>
+          <a href="#">Contacto</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span class="footer-copy">© 2026 MultIA · Todos los derechos reservados</span>
+      <div class="footer-legal">
+        <a href="#">Privacidad</a>
+        <a href="#">Términos</a>
+        <a href="#">Cookies</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- PAYMENT MODAL -->
+<div class="modal-overlay" id="modal">
+  <div class="modal-box pay-modal">
+    <button class="modal-close" onclick="closeModal()">×</button>
+    <h2>Crear cuenta en <span>MultIA</span></h2>
+    <div class="plan-badge" id="modal-plan-badge">⭐ Plan Pro — $19/mes</div>
+    <div class="pay-row">
+      <div>
+        <div class="pay-label">Nombre</div>
+        <input class="pay-field" type="text" placeholder="Juan">
+      </div>
+      <div>
+        <div class="pay-label">Apellido</div>
+        <input class="pay-field" type="text" placeholder="García">
+      </div>
+    </div>
+    <div class="pay-full">
+      <div class="pay-label">Correo electrónico</div>
+      <input class="pay-field" type="email" placeholder="juan@empresa.com">
+    </div>
+    <div class="pay-full">
+      <div class="pay-label">Contraseña</div>
+      <input class="pay-field" type="password" placeholder="••••••••">
+    </div>
+    <div class="pay-sep">o paga con tarjeta</div>
+    <div class="pay-full">
+      <div class="pay-label">Número de tarjeta</div>
+      <div class="pay-card-wrap">
+        <input class="pay-field" type="text" placeholder="4242 4242 4242 4242">
+        <span class="pay-card-icon">💳</span>
+      </div>
+    </div>
+    <div class="pay-row">
+      <div>
+        <div class="pay-label">Vencimiento</div>
+        <input class="pay-field" type="text" placeholder="MM/AA">
+      </div>
+      <div>
+        <div class="pay-label">CVV</div>
+        <input class="pay-field" type="text" placeholder="•••">
+      </div>
+    </div>
+    <button class="btn btn-amber" style="width:100%;padding:14px;font-size:15px;border-radius:var(--r2);margin-top:8px">
+      Crear cuenta y comenzar →
+    </button>
+    <div class="pay-secure">🔒 Pago cifrado · 14 días gratis · Cancela cuando quieras</div>
+  </div>
+</div>
+
+<script>
+// Dropdown navigation
+function toggleDD(id) {
+  const key = id.replace('dd-', '');
+  const panel = document.getElementById('panel-' + key);
+  const btn = document.querySelector('#' + id + ' .nav-dd-btn');
+  const isOpen = panel.classList.contains('open');
+  document.querySelectorAll('.nav-dd-panel').forEach(p => p.classList.remove('open'));
+  document.querySelectorAll('.nav-dd-btn').forEach(b => b.classList.remove('open'));
+  if (!isOpen) { panel.classList.add('open'); btn.classList.add('open'); }
+}
+document.addEventListener('click', function(e) {
+  if (!e.target.closest('.nav-dd')) {
+    document.querySelectorAll('.nav-dd-panel').forEach(p => p.classList.remove('open'));
+    document.querySelectorAll('.nav-dd-btn').forEach(b => b.classList.remove('open'));
+  }
+});
+
+// Accordion
+function toggleAcc(btn) {
+  const body = btn.nextElementSibling;
+  const isOpen = btn.classList.contains('open');
+  btn.closest('.nav-dd-panel').querySelectorAll('.accordion-btn').forEach(b => {
+    b.classList.remove('open');
+    b.nextElementSibling.classList.remove('open');
+  });
+  if (!isOpen) { btn.classList.add('open'); body.classList.add('open'); }
+}
+
+// Scroll story
+const TOTAL_STEPS = 5;
+let currentStep = 0;
+let isAnimating = false;
+
+function goStep(n) {
+  if (n === currentStep || isAnimating) return;
+  isAnimating = true;
+  const steps = document.querySelectorAll('.ss-step');
+
+  steps[currentStep].classList.remove('active');
+  steps[currentStep].classList.add('exiting');
+  const exitIdx = currentStep;
+  setTimeout(() => steps[exitIdx].classList.remove('exiting'), 320);
+
+  steps[n].classList.add('active');
+
+  // Swap mockup panel
+  document.querySelectorAll('[id^="mock-"]').forEach(p => { p.style.display = 'none'; });
+  const next = document.getElementById('mock-' + n);
+  if (next) {
+    next.style.display = '';
+    next.classList.remove('ss-panel');
+    void next.offsetWidth;
+    next.classList.add('ss-panel');
+  }
+
+  // Animate progress bar when files panel shown
+  if (n === 2) {
+    const fill = document.getElementById('prog-fill');
+    if (fill) { fill.style.width = '0%'; setTimeout(() => { fill.style.width = '72%'; }, 100); }
+  }
+
+  currentStep = n;
+  setTimeout(() => { isAnimating = false; }, 620);
+}
+
+// Scroll-driven story steps
+const storyEl = document.getElementById('scroll-story');
+window.addEventListener('scroll', function() {
+  if (!storyEl) return;
+  const top = storyEl.getBoundingClientRect().top;
+  const total = storyEl.offsetHeight - window.innerHeight;
+  const scrolled = -top;
+  if (scrolled < 0 || scrolled > total) return;
+  const target = Math.min(Math.floor((scrolled / total) * TOTAL_STEPS), TOTAL_STEPS - 1);
+  if (target !== currentStep) goStep(target);
+}, { passive: true });
+
+// Reveal on scroll
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('on'); obs.unobserve(e.target); } });
+}, { threshold: 0.12 });
+document.querySelectorAll('.rv').forEach(el => obs.observe(el));
+
+// Modal
+const planLabels = {
+  free: '🎁 Plan Gratis — $0/mes',
+  pro: '⭐ Plan Pro — $19/mes',
+  business: '🚀 Plan Business — $49/mes'
+};
+function openModal(plan) {
+  const badge = document.getElementById('modal-plan-badge');
+  if (badge && planLabels[plan]) badge.textContent = planLabels[plan];
+  document.getElementById('modal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeModal() {
+  document.getElementById('modal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+document.getElementById('modal').addEventListener('click', function(e) {
+  if (e.target === this) closeModal();
+});
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+</script>
+</body>
+</html>

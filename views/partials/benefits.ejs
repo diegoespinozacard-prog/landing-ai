@@ -1,0 +1,27 @@
+<section id="benefits" class="sec-zoom">
+  <div class="wrap">
+    <div class="sec-header rv">
+      <span class="chip chip-amber chip-dot" style="margin-bottom:16px">Impacto real</span>
+      <h2 class="ttl hd-zoom" style="margin-bottom:12px">Resultados que generan <em style="font-style:normal;color:var(--amber)">impactos productivos en tu negocio</em></h2>
+    </div>
+
+    <div class="ben-grid stagger-grid">
+      <% benefits.forEach((b, i) => { %>
+      <div class="ben-card <%= i % 2 === 0 ? 'rv-l' : 'rv-r' %> d<%= (i % 4) + 1 %>">
+        <div class="ben-stat">
+          <% if (b.icon) { %>
+            <i data-lucide="<%= b.icon %>" class="ben-stat-icon"></i>
+          <% } else if (b.count) { %>
+            <span data-count="<%= b.count %>" data-count-from="<%= b.countFrom || '' %>"><%= b.stat %></span>
+          <% } else { %>
+            <%= b.stat %>
+          <% } %>
+        </div>
+        <div class="ben-title"><%= b.title %></div>
+        <p class="ben-desc"><%= b.desc %></p>
+        <div class="ben-impact">↗ <%= b.impact %></div>
+      </div>
+      <% }) %>
+    </div>
+  </div>
+</section>

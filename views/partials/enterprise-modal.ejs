@@ -1,0 +1,55 @@
+<div class="modal-overlay" id="enterprise-modal">
+  <div class="modal-box enterprise-box">
+    <button class="modal-close" onclick="closeEnterpriseModal()">×</button>
+
+    <div class="ent-header">
+      <div class="plan-badge" style="margin-bottom:14px">
+        <i data-lucide="building-2"></i><span>Plan Enterprise</span>
+      </div>
+      <h2 style="font-family:var(--f-display);font-size:20px;font-weight:800;margin-bottom:6px">
+        Hablemos de tu empresa
+      </h2>
+      <p style="font-size:13px;color:var(--ink3);line-height:1.6;margin-bottom:20px">
+        Cuéntanos qué necesitas y un especialista de MultIA te contactará en menos de 24 horas.
+      </p>
+    </div>
+
+    <div class="pay-row">
+      <div>
+        <div class="pay-label">Nombre *</div>
+        <input class="pay-field" type="text" placeholder="Juan García" id="ent-nombre">
+      </div>
+      <div>
+        <div class="pay-label">Cargo *</div>
+        <input class="pay-field" type="text" placeholder="CEO / CTO / Director" id="ent-cargo">
+      </div>
+    </div>
+    <div class="pay-row">
+      <div>
+        <div class="pay-label">Empresa *</div>
+        <input class="pay-field" type="text" placeholder="Nombre de tu empresa" id="ent-empresa">
+      </div>
+      <div>
+        <div class="pay-label">Correo *</div>
+        <input class="pay-field" type="email" placeholder="juan@empresa.com" id="ent-correo">
+      </div>
+    </div>
+    <div class="pay-full">
+      <div class="pay-label">Celular</div>
+      <input class="pay-field" type="tel" placeholder="+51 999 000 000" id="ent-celular">
+    </div>
+    <div class="pay-full">
+      <div class="pay-label">Requerimiento *</div>
+      <textarea class="pay-field" rows="3" placeholder="Describe brevemente lo que necesitas…" id="ent-req" style="resize:vertical;min-height:80px"></textarea>
+    </div>
+
+    <button class="btn btn-amber" style="width:100%;padding:14px;font-size:15px;border-radius:var(--r2);margin-top:8px" onclick="submitEnterprise()">
+      Enviar solicitud →
+    </button>
+
+    <div class="ent-contact">
+      <i data-lucide="phone"></i>
+      ¿Prefieres llamar? <a href="tel:+51959950520">+51 959 950 520</a>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,155 @@
+<section id="scroll-story">
+  <div class="ss-wrapper">
+    <div class="ss-sticky">
+      <div class="ss-inner">
+
+        <!-- LEFT: animated steps -->
+        <div class="ss-left">
+          <% storySteps.forEach((step, idx) => { %>
+          <div class="ss-step <%= idx === 0 ? 'active' : '' %>" data-step="<%= idx %>">
+
+            <!-- Segmento 1: badge — entra desde la IZQUIERDA -->
+            <div class="step-seg step-seg-l">
+              <div class="ss-step-chip">
+                <span class="chip chip-amber chip-dot"><%= step.chip %></span>
+              </div>
+            </div>
+
+            <!-- Segmento 2: titular — entra desde la DERECHA -->
+            <div class="step-seg step-seg-r">
+              <h2 class="ss-step-h2"><%= step.title %><br/><em><%= step.titleEm %></em></h2>
+            </div>
+
+            <!-- Segmento 3: cuerpo + tags + nav — entra desde ABAJO -->
+            <div class="step-seg step-seg-b">
+              <p class="ss-step-p"><%= step.body %></p>
+              <div class="broken-tags">
+                <% step.tags.forEach(tag => { %>
+                <span class="broken-tag <%= tag.active ? 'on' : '' %>"><%= tag.label %></span>
+                <% }) %>
+              </div>
+              <div class="ss-dots">
+                <% storySteps.forEach((_, di) => { %>
+                <div class="ss-dot <%= di === idx ? 'active' : '' %>" onclick="goStep(<%= di %>)"></div>
+                <% }) %>
+              </div>
+              <div class="ss-arrows">
+                <% if (idx > 0) { %>
+                <button class="ss-arrow-btn" onclick="goStep(<%= idx - 1 %>)" aria-label="Anterior">←</button>
+                <% } else { %>
+                <button class="ss-arrow-btn" disabled style="opacity:0.3" aria-label="Anterior">←</button>
+                <% } %>
+                <% if (idx < storySteps.length - 1) { %>
+                <button class="ss-arrow-btn" onclick="goStep(<%= idx + 1 %>)" aria-label="Siguiente">→</button>
+                <% } else { %>
+                <button class="ss-arrow-btn" disabled style="opacity:0.3" aria-label="Siguiente">→</button>
+                <% } %>
+              </div>
+            </div>
+
+          </div>
+          <% }) %>
+        </div><!-- /ss-left -->
+
+        <!-- RIGHT: unified chat stream (twin.so style) -->
+        <div class="ss-right">
+          <div class="ss-mockup">
+
+            <!-- Mac chrome -->
+            <div class="ss-bar">
+              <div class="mac-dots"><span></span><span></span><span></span></div>
+              <span class="ss-bar-title">MultIA — AI Workplace</span>
+              <span class="ss-bar-status">● En línea</span>
+            </div>
+
+            <!-- App header -->
+            <div class="ss-app-header">
+              <img src="/img/logoMultia.webp" alt="MultIA" class="ss-app-logo">
+              <span class="ss-app-name">Mult<em>IA</em></span>
+            </div>
+
+            <!-- Chat stream: messages accumulate as you scroll -->
+            <div class="ss-chat-stream" id="chat-stream" spellcheck="false">
+
+              <!-- Step 0: Imágenes & Audio -->
+              <div class="ss-chat-msg user" data-step="0">
+                <div class="ss-msg-av">D</div>
+                <div class="ss-msg-bbl">🎨 Generame un slogan para MultIA</div>
+              </div>
+              <div class="ss-chat-msg ai" data-step="0">
+                <div class="ss-msg-av ss-msg-av-logo"><img src="/img/logoMultia.webp" alt="M"></div>
+                <div class="ss-msg-bbl ss-msg-bbl-dashboard">
+                  <span class="ss-dashboard-label">Imagen generada ✓</span>
+                  <img src="/img/SLOGAN.PNG" alt="Slogan MultIA" class="ss-dashboard-img ss-dashboard-img-sm">
+                </div>
+              </div>
+
+              <!-- Step 1: Datos & Analytics -->
+              <div class="ss-chat-msg user msg-hidden" data-step="1">
+                <div class="ss-msg-av">D</div>
+                <div class="ss-msg-bbl">📊 <strong>ventas_Q1.xlsx</strong> — genera un dashboard con los insights</div>
+              </div>
+              <div class="ss-chat-msg ai msg-hidden" data-step="1">
+                <div class="ss-msg-av ss-msg-av-logo"><img src="/img/logoMultia.webp" alt="M"></div>
+                <div class="ss-msg-bbl ss-msg-bbl-dashboard">
+                  <span class="ss-dashboard-label">Dashboard generado ✓</span>
+                  <img src="/img/dashboard_rendimiento.jpg" alt="Dashboard de rendimiento" class="ss-dashboard-img">
+                  <span class="ss-dashboard-sub">3 tendencias clave — ingresos ↑18% vs Q4</span>
+                </div>
+              </div>
+
+              <!-- Step 2: Documentos -->
+              <div class="ss-chat-msg user msg-hidden" data-step="2">
+                <div class="ss-msg-av">D</div>
+                <div class="ss-msg-bbl">📎 <strong>Contrato_2026.pdf</strong> — analiza y extrae los puntos críticos</div>
+              </div>
+              <div class="ss-chat-msg ai msg-hidden" data-step="2">
+                <div class="ss-msg-av ss-msg-av-logo"><img src="/img/logoMultia.webp" alt="M"></div>
+                <div class="ss-msg-bbl ss-msg-bbl-dashboard">
+                  <span class="ss-dashboard-label">PDF generado ✓</span>
+                  <div class="ss-pdf-wrap">
+                    <img src="/img/CONTRATOP.png" alt="Contrato MultIA" class="ss-dashboard-img ss-dashboard-img-sm">
+                  </div>
+                  <span class="ss-dashboard-sub">3 cláusulas críticas identificadas</span>
+                </div>
+              </div>
+
+              <!-- Step 3: Código & Web -->
+              <div class="ss-chat-msg user msg-hidden" data-step="3">
+                <div class="ss-msg-av">D</div>
+                <div class="ss-msg-bbl">Necesito un componente React con formulario y validación en tiempo real</div>
+              </div>
+              <div class="ss-chat-msg ai msg-hidden" data-step="3">
+                <div class="ss-msg-av ss-msg-av-logo"><img src="/img/logoMultia.webp" alt="M"></div>
+                <div class="ss-msg-bbl ss-msg-bbl-dashboard">
+                  <span class="ss-dashboard-label">Código generado ✓</span>
+                  <img src="/img/cod.png" alt="Código generado" class="ss-dashboard-img ss-dashboard-img-sm">
+                  <span class="ss-dashboard-sub">Componente React con useState y TypeScript</span>
+                </div>
+              </div>
+
+              <!-- Step 4: Proyectos -->
+              <div class="ss-chat-msg user msg-hidden" data-step="4">
+                <div class="ss-msg-av">D</div>
+                <div class="ss-msg-bbl">¿Puedo darle acceso a mi equipo a este proyecto?</div>
+              </div>
+              <div class="ss-chat-msg ai msg-hidden" data-step="4">
+                <div class="ss-msg-av ss-msg-av-logo"><img src="/img/logoMultia.webp" alt="M"></div>
+                <div class="ss-msg-bbl">Sí. Crea un <strong>proyecto compartido</strong> — tu equipo tendrá acceso a archivos e historial al instante.</div>
+              </div>
+
+            </div><!-- /chat-stream -->
+
+            <!-- Input row -->
+            <div class="ss-input-row">
+              <input class="ss-inp" placeholder="Escribe un mensaje..." readonly>
+              <button class="ss-send">↑</button>
+            </div>
+
+          </div><!-- /ss-mockup -->
+        </div><!-- /ss-right -->
+
+      </div><!-- /ss-inner -->
+    </div><!-- /ss-sticky -->
+  </div><!-- /ss-wrapper -->
+</section>

@@ -1,0 +1,78 @@
+/* ── Pricing section ───────────────────────────────────── */
+#pricing{padding:96px 0;background:var(--bg)}
+.pricing-header{text-align:center;margin-bottom:52px}
+.pricing-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:20px;align-items:stretch;
+}
+
+/* Card */
+.pricing-card{
+  background:var(--white);border:1.5px solid var(--border);
+  border-radius:var(--r3);padding:24px;transition:border-color 0.2s,box-shadow 0.2s;
+  position:relative
+}
+.pricing-card:hover{box-shadow:var(--sh3)}
+.pricing-card.popular{border-color:var(--amber);box-shadow:var(--sh-amber)}
+
+.popular-badge{
+  position:absolute;top:-13px;left:50%;transform:translateX(-50%);
+  background:var(--amber);color:#fff;font-size:11px;font-weight:700;
+  padding:4px 14px;border-radius:var(--r-full);white-space:nowrap;
+  display:inline-flex;align-items:center;gap:5px
+}
+.popular-badge i,.popular-badge svg{width:11px;height:11px;stroke-width:2.5;fill:currentColor;stroke:none}
+
+/* Inline icon helpers (lock, etc.) */
+.pricing-note i,.pricing-note svg{
+  width:13px;height:13px;stroke-width:2;vertical-align:-2px
+}
+
+/* Plan label */
+.pc-plan{
+  font-family:var(--f-display);font-size:13px;font-weight:700;
+  letter-spacing:0.04em;text-transform:uppercase;color:var(--ink3);margin-bottom:10px
+}
+
+/* Price */
+.pc-price{display:flex;align-items:flex-end;gap:3px;margin-bottom:6px}
+.pc-price .amt{
+  font-family:var(--f-display);font-size:38px;font-weight:800;
+  color:var(--ink);letter-spacing:-0.04em
+}
+.pc-price .curr{
+  font-family:var(--f-display);font-size:16px;font-weight:700;
+  color:var(--ink3);margin-bottom:7px
+}
+.pc-price .per{font-size:13px;color:var(--ink4);margin-bottom:5px}
+
+/* Description */
+.pc-desc{font-size:13px;color:var(--ink3);margin-bottom:18px;line-height:1.6}
+
+/* CTA button */
+.pc-cta{
+  width:100%;padding:12px;border-radius:var(--r2);font-size:14px;font-weight:700;
+  cursor:pointer;transition:all 0.18s;font-family:var(--f-body);border:none;margin-bottom:18px
+}
+.pricing-card.popular .pc-cta{
+  background:var(--amber);color:#fff;box-shadow:0 2px 0 var(--amber-d)
+}
+.pricing-card.popular .pc-cta:hover{background:#e89b18;transform:translateY(-1px)}
+.pricing-card:not(.popular) .pc-cta{
+  background:var(--bg2);color:var(--ink);border:1.5px solid var(--border)
+}
+.pricing-card:not(.popular) .pc-cta:hover{background:var(--bg3)}
+
+/* Feature list */
+.pc-sep{height:1px;background:var(--border);margin-bottom:16px}
+.pc-features{display:flex;flex-direction:column;gap:12px}
+.pcf-item{display:flex;align-items:center;gap:12px;font-size:15px;color:var(--ink2)}
+.pcf-item .check{
+  flex-shrink:0;width:40px;min-width:40px;height:12px;border-radius:4px;
+  background:var(--green);display:inline-block;font-size:0
+}
+
+/* Note */
+.pricing-note{
+  text-align:center;margin-top:28px;font-size:13px;color:var(--ink4);
+  display:flex;gap:8px;align-items:center;justify-content:center
+}

@@ -1,0 +1,163 @@
+/* ══════════════════════════════════════════════════════════
+   Responsive — mobile-first breakpoints
+   1120 → 1000 → 900 → 820 → 800 → 768 → 640 → 480
+══════════════════════════════════════════════════════════ */
+
+/* ── 1000px: features/benefits 4→3, profiles 4→2 ──────── */
+@media (max-width: 1000px) {
+  .feat-grid    { grid-template-columns: repeat(3, 1fr); }
+  .ben-grid     { grid-template-columns: repeat(3, 1fr); }
+  .prof-grid    { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* ── 700px: pricing 3→2 cols ───────────────────────────── */
+@media (max-width: 700px) {
+  .pricing-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* ── 900px: scroll story single-column ────────────────── */
+@media (max-width: 900px) {
+  .ss-inner { grid-template-columns: 1fr; gap: 32px; }
+  .ss-right  { display: none; }
+}
+
+/* ── 820px: sell-strip stacks ──────────────────────────── */
+@media (max-width: 820px) {
+  .sell-inner { flex-direction: column; align-items: flex-start; }
+}
+
+/* ── 800px: footer 3→2 cols ────────────────────────────── */
+@media (max-width: 800px) {
+  .footer-inner { grid-template-columns: 1fr 1fr; gap: 40px; }
+}
+
+/* ── 768px: wrap padding ───────────────────────────────── */
+@media (max-width: 768px) {
+  .wrap { padding: 0 20px; }
+
+  .hv-content { padding: 60px 24px; }
+
+  .ss-inner { padding: 0 20px; }
+
+  #pricing { padding: 60px 0; }
+  #cta-final { padding: 72px 0; }
+  .cta-box { padding: 44px 24px; }
+}
+
+/* ── 768px: nav height reduction ───────────────────────── */
+@media (max-width: 768px) {
+  :root { --nav-h: 58px; }
+
+  .nav-logo-icon { height: 32px; }
+  .nav-inner     { padding: 8px 0; }
+}
+
+/* ── 640px: hamburger nav + mobile story carousel ──────── */
+@media (max-width: 640px) {
+  :root { --nav-h: 54px; }
+
+  .nav-logo-icon { height: 28px; }
+  .nav-inner     { padding: 6px 0; }
+
+  /* Show hamburger, hide desktop menu */
+  .nav-hamburger { display: flex; }
+  .nav-menu      { display: none; }
+
+  /* Hide desktop login button, keep CTA in mobile drawer instead */
+  .nav-login { display: none; }
+
+  /* ── Mobile story: disable sticky scroll, enable carousel ── */
+  .ss-wrapper {
+    height: auto;
+  }
+  .ss-sticky {
+    position: relative;
+    top: unset;
+    height: auto;
+    padding: 52px 0 40px;
+  }
+  .ss-inner {
+    display: block;
+    padding: 0 20px;
+  }
+  .ss-left {
+    /* carousel container */
+    overflow: hidden;
+    min-height: unset;
+    touch-action: pan-y;
+  }
+
+  /* All steps visible in flow, JS will handle transform-based sliding */
+  .ss-step {
+    position: relative;
+    opacity: 1;
+    transform: none;
+    filter: none;
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    pointer-events: auto;
+    /* carousel: each step fills the container */
+    display: none;
+  }
+  .ss-step.active {
+    display: block;
+    position: relative;
+  }
+  .ss-step.exiting {
+    display: none;
+  }
+
+  /* Dots: keep visible */
+  .ss-dots { margin-top: 20px; }
+
+  /* Show arrow buttons */
+  .ss-arrows { display: flex; }
+
+  /* ── Sell strip ── */
+  .sell-logo-side { font-size: 22px; }
+
+  /* ── Footer ── */
+  .footer-inner { grid-template-columns: 1fr; gap: 32px; }
+}
+
+/* ── 640px extras: features/benefits/profiles 2→1 ─────── */
+@media (max-width: 640px) {
+  .feat-grid { grid-template-columns: repeat(2, 1fr); }
+  .ben-grid  { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* ── 580px: pricing 2→1 col ────────────────────────────── */
+@media (max-width: 580px) {
+  .pricing-grid { grid-template-columns: 1fr; }
+}
+
+/* ── 480px: small phones ───────────────────────────────── */
+@media (max-width: 480px) {
+
+  /* Hero */
+  .hv-title { font-size: clamp(34px, 10vw, 52px); }
+  .hv-sub   { font-size: 15px; }
+  .hv-content { padding: 48px 20px; }
+
+  /* Modal slides up from bottom */
+  .modal-overlay { align-items: flex-end; }
+  .modal-box {
+    max-width: 100%;
+    width: 100%;
+    border-radius: var(--r2) var(--r2) 0 0;
+    margin-top: auto;
+    max-height: 95vh;
+    padding: 28px 20px;
+  }
+
+  /* Pay form: stack 2-col row */
+  .pay-row { grid-template-columns: 1fr; }
+
+  /* CTA box */
+  .cta-box { border-radius: var(--r2); padding: 36px 20px; }
+
+  /* Pricing card padding */
+  .pricing-card { padding: 20px 16px; }
+
+  /* Footer */
+  .footer-bottom { flex-direction: column; align-items: flex-start; }
+}
