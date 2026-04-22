@@ -1,10 +1,21 @@
 const express = require('express');
 const path    = require('path');
+const fs      = require('fs');
 const app     = express();
 
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.json());
+
+const DATA_DIR   = path.join(__dirname, 'data');
+const LEADS_CSV  = path.join(DATA_DIR, 'leads.csv');
+const LEADS_JSON = path.join(DATA_DIR, 'leads.json');
+const CSV_HEADER = '\uFEFFFecha,Nombre,Apellido,Telefono,Empresa,Cargo,Email\n';
+
+if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
+if (!fs.existsSync(LEADS_CSV))  fs.writeFileSync(LEADS_CSV,  CSV_HEADER, 'utf8');
+if (!fs.existsSync(LEADS_JSON)) fs.writeFileSync(LEADS_JSON, '[]',        'utf8');
 
 /* ── Data ──────────────────────────────────────────────── */
 
@@ -191,6 +202,71 @@ const pricingPlans = [
 
 app.get('/', (req, res) => {
   res.render('index', { models, features, userProfiles, benefits, pricingPlans, storySteps });
+});
+
+const PERSONAL_DOMAINS = new Set([
+  'gmail.com','googlemail.com','hotmail.com','hotmail.es','hotmail.co',
+  'outlook.com','outlook.es','live.com','live.cl','live.com.ar','live.com.mx',
+  'yahoo.com','yahoo.es','yahoo.com.ar','yahoo.com.mx','yahoo.co',
+  'icloud.com','me.com','mac.com',
+  'aol.com','msn.com','protonmail.com','proton.me','tutanota.com',
+  'yandex.com','yandex.ru','mail.com','zoho.com','gmx.com','inbox.com',
+  'terra.com','terra.com.br','bol.com.br','uol.com.br','qq.com','163.com','126.com'
+]);
+
+app.post('/api/leads', (req, res) => {
+  const { nombre, apellido, telefono, empresa, cargo, email } = req.body;
+  if (!nombre || !apellido || !telefono || !empresa || !cargo || !email) {
+    return res.json({ ok: false, error: 'Campos incompletos' });
+  }
+  const domain = (email || '').split('@')[1]?.toLowerCase() || '';
+  if (PERSONAL_DOMAINS.has(domain)) {
+    return res.json({ ok: false, error: 'Correo personal no permitido. Usa tu correo corporativo.' });
+  }
+
+  const fecha = new Date().toLocaleString('es-CL', { timeZone: 'America/Santiago' });
+  const record = { fecha, nombre, apellido, telefono, empresa, cargo, email };
+
+  try {
+    // 1. Save to JSON (primary backup — never loses data)
+    let leads = [];
+    try { leads = JSON.parse(fs.readFileSync(LEADS_JSON, 'utf8')); } catch(e) { leads = []; }
+    leads.push(record);
+    fs.writeFileSync(LEADS_JSON, JSON.stringify(leads, null, 2), 'utf8');
+
+    // 2. Rebuild CSV from JSON so it's always in sync
+    const esc = (v) => '"' + String(v).replace(/"/g, '""') + '"';
+    const rows = leads.map(r =>
+      [esc(r.fecha), esc(r.nombre), esc(r.apellido), esc(r.telefono), esc(r.empresa), esc(r.cargo), esc(r.email)].join(',')
+    ).join('\n');
+    fs.writeFileSync(LEADS_CSV, CSV_HEADER + rows + '\n', 'utf8');
+
+    res.json({ ok: true });
+  } catch(err) {
+    console.error('Error guardando lead:', err);
+    res.json({ ok: false, error: 'Error al guardar' });
+  }
+});
+
+app.get('/admin/leads/download', (req, res) => {
+  try {
+    // Always rebuild CSV from JSON source of truth
+    let leads = [];
+    if (fs.existsSync(LEADS_JSON)) {
+      try { leads = JSON.parse(fs.readFileSync(LEADS_JSON, 'utf8')); } catch(e) { leads = []; }
+    }
+    if (!leads.length) return res.status(404).send('Sin leads registrados aún.');
+    const esc = (v) => '"' + String(v || '').replace(/"/g, '""') + '"';
+    const rows = leads.map(r =>
+      [esc(r.fecha), esc(r.nombre), esc(r.apellido), esc(r.telefono), esc(r.empresa), esc(r.cargo), esc(r.email)].join(',')
+    ).join('\n');
+    const csv = CSV_HEADER + rows + '\n';
+    res.setHeader('Content-Type', 'text/csv; charset=utf-8');
+    res.setHeader('Content-Disposition', 'attachment; filename="leads-multia.csv"');
+    res.send(csv);
+  } catch(err) {
+    res.status(500).send('Error al generar el archivo.');
+  }
 });
 
 /* ── Start ─────────────────────────────────────────────── */
