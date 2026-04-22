@@ -1,0 +1,105 @@
+<section id="tutorials" class="sec-zoom">
+  <div class="wrap">
+    <div class="sec-header rv">
+      <span class="chip chip-amber chip-dot" style="margin-bottom:16px">Tutoriales</span>
+      <h2 class="ttl hd-zoom" style="margin-bottom:12px">Aprende a usar <em style="font-style:normal;color:var(--amber)">MultIA</em></h2>
+      <p class="lead rv">Guías rápidas para sacarle el máximo provecho a la plataforma.</p>
+    </div>
+
+    <div class="tut-grid stagger-grid">
+
+      <div class="tut-card rv-l d1" onclick="openTutorial('/img/Como%20entrar%20a%20un%20proyecto.mp4')">
+        <div class="tut-video-wrap">
+          <video autoplay muted loop playsinline class="tut-video">
+            <source src="/img/Como%20entrar%20a%20un%20proyecto.mp4" type="video/mp4">
+          </video>
+          <div class="tut-play-btn"><i data-lucide="play"></i></div>
+        </div>
+        <div class="tut-info">
+          <span class="tut-num">01</span>
+          <div class="tut-title">Cómo entrar a un proyecto</div>
+        </div>
+      </div>
+
+      <div class="tut-card rv d2" onclick="openTutorial('/img/Generar%20im%C3%A1genes.mp4')">
+        <div class="tut-video-wrap">
+          <video autoplay muted loop playsinline class="tut-video">
+            <source src="/img/Generar%20im%C3%A1genes.mp4" type="video/mp4">
+          </video>
+          <div class="tut-play-btn"><i data-lucide="play"></i></div>
+        </div>
+        <div class="tut-info">
+          <span class="tut-num">02</span>
+          <div class="tut-title">Cómo generar imágenes</div>
+        </div>
+      </div>
+
+      <div class="tut-card rv-r d3" onclick="openTutorial('/img/Tutorial%20Dashboard.mp4')">
+        <div class="tut-video-wrap">
+          <video autoplay muted loop playsinline class="tut-video">
+            <source src="/img/Tutorial%20Dashboard.mp4" type="video/mp4">
+          </video>
+          <div class="tut-play-btn"><i data-lucide="play"></i></div>
+        </div>
+        <div class="tut-info">
+          <span class="tut-num">03</span>
+          <div class="tut-title">Cómo generar un dashboard</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- Tutorial lightbox -->
+<div id="tut-lightbox" onclick="closeTutorial(event)">
+  <div class="tut-lb-inner">
+    <button class="tut-lb-close" onclick="closeTutorial()">&times;</button>
+    <video id="tut-lb-video" controls>
+      <source id="tut-lb-src" src="" type="video/mp4">
+    </video>
+  </div>
+</div>
+
+<script>
+  // Restart loop videos when they enter/leave viewport
+  (function() {
+    var obs = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        var vid = entry.target;
+        if (entry.isIntersecting) {
+          vid.currentTime = 0;
+          vid.play();
+        } else {
+          vid.pause();
+          vid.currentTime = 0;
+        }
+      });
+    }, { threshold: 0.3 });
+
+    document.querySelectorAll('.tut-video').forEach(function(v) {
+      obs.observe(v);
+    });
+  })();
+
+  function openTutorial(src) {
+    var lb  = document.getElementById('tut-lightbox');
+    var vid = document.getElementById('tut-lb-video');
+    var s   = document.getElementById('tut-lb-src');
+    s.src = src;
+    vid.load();
+    vid.currentTime = 0;
+    vid.play();
+    lb.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeTutorial(e) {
+    if (e && e.target !== document.getElementById('tut-lightbox') && !e.target.classList.contains('tut-lb-close')) return;
+    var lb  = document.getElementById('tut-lightbox');
+    var vid = document.getElementById('tut-lb-video');
+    vid.pause();
+    lb.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  document.addEventListener('keydown', function(e){ if(e.key==='Escape') closeTutorial({target:document.getElementById('tut-lightbox')}); });
+</script>

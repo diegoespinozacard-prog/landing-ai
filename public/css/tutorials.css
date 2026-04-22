@@ -1,0 +1,120 @@
+/* ── Tutorials section ─────────────────────────────────── */
+#tutorials { padding: 100px 0; }
+
+.tut-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-top: 56px;
+}
+
+.tut-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--r2);
+  overflow: hidden;
+  transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+}
+.tut-card:hover {
+  border-color: var(--amber-ring, rgba(245,166,35,0.4));
+  transform: translateY(-4px);
+  box-shadow: 0 16px 48px rgba(0,0,0,0.4);
+}
+
+.tut-video-wrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: #000;
+}
+.tut-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.tut-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 20px;
+}
+.tut-num {
+  font-family: var(--f-display);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--amber);
+  letter-spacing: 0.08em;
+  flex-shrink: 0;
+}
+.tut-title {
+  font-family: var(--f-display);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--ink);
+  line-height: 1.4;
+}
+
+/* Play overlay button */
+.tut-card { cursor: pointer; }
+.tut-video-wrap { position: relative; }
+.tut-play-btn {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(0,0,0,0.3);
+  opacity: 0; transition: opacity 0.2s;
+}
+.tut-card:hover .tut-play-btn { opacity: 1; }
+.tut-play-btn i {
+  width: 52px; height: 52px;
+  background: var(--amber); border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  color: #000; stroke-width: 2;
+  padding-left: 4px;
+}
+
+/* Lightbox */
+#tut-lightbox {
+  position: fixed; inset: 0; z-index: 2000;
+  background: rgba(0,0,0,0.92);
+  backdrop-filter: blur(10px);
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.25s ease;
+}
+#tut-lightbox.open { opacity: 1; pointer-events: auto; }
+.tut-lb-inner {
+  position: relative;
+  width: min(90vw, 1100px);
+  border-radius: var(--r2);
+  overflow: hidden;
+  box-shadow: 0 32px 80px rgba(0,0,0,0.8);
+}
+.tut-lb-inner video {
+  width: 100%; display: block;
+  aspect-ratio: 16/9; background: #000;
+}
+.tut-lb-close {
+  position: absolute; top: 12px; right: 14px; z-index: 10;
+  background: rgba(0,0,0,0.6); border: none;
+  color: #fff; font-size: 22px; width: 36px; height: 36px;
+  border-radius: 50%; cursor: pointer; line-height: 1;
+  display: flex; align-items: center; justify-content: center;
+  transition: background 0.15s;
+}
+.tut-lb-close:hover { background: var(--amber); color: #000; }
+
+/* ── Light mode ────────────────────────────────────────── */
+html.light-mode .tut-card {
+  background: rgba(0,0,0,0.03);
+  border-color: rgba(0,0,0,0.09);
+}
+html.light-mode .tut-card:hover {
+  border-color: var(--amber);
+}
+
+/* ── Responsive ────────────────────────────────────────── */
+@media (max-width: 900px) {
+  .tut-grid { grid-template-columns: 1fr; max-width: 480px; margin-left: auto; margin-right: auto; }
+}
