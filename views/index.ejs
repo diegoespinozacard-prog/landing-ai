@@ -35,6 +35,23 @@
   <%- include('partials/modal',        { pricingPlans }) %>
   <%- include('partials/enterprise-modal') %>
 
+  <script>
+    (function(){
+      var nav = document.getElementById('nav');
+      if (nav) nav.style.opacity = '0';
+      var vid = document.getElementById('hero-vid');
+      if (!vid) return;
+      vid.addEventListener('ended', function onFirstEnd(){
+        vid.removeEventListener('ended', onFirstEnd);
+        vid.loop = true;
+        vid.play();
+        if (nav) {
+          nav.style.transition = 'opacity 0.8s ease';
+          nav.style.opacity = '1';
+        }
+      });
+    })();
+  </script>
   <script src="/js/spotlight.js"></script>
   <script src="/js/utils.js"></script>
   <script src="/js/nav.js"></script>

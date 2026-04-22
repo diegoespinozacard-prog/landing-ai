@@ -18,6 +18,11 @@
     var panel = document.getElementById('panel-' + id);
     var btn   = document.querySelector('#dd-' + id + ' .nav-dd-btn');
     if (!panel || !btn) return;
+    var r = btn.getBoundingClientRect();
+    var left = r.left;
+    var panelW = panel.offsetWidth || 340;
+    if (left + panelW > window.innerWidth - 16) left = window.innerWidth - panelW - 16;
+    panel.style.left = Math.max(8, left) + 'px';
     panel.classList.add('open');
     btn.classList.add('open');
     openId = id;

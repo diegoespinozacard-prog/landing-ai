@@ -76,19 +76,17 @@ html.light-mode .icon-moon{display:block}
 .nav-dd-btn.open svg{transform:rotate(180deg);opacity:1}
 
 .nav-dd-panel{
-  position:fixed;top:var(--nav-h);left:0;right:0;width:100%;
-  background:rgba(14,14,14,0.97);
-  border:none;border-top:1px solid rgba(255,255,255,0.07);
-  border-bottom:1px solid rgba(255,255,255,0.07);
-  border-radius:0;
-  box-shadow:0 24px 64px rgba(0,0,0,0.6);
-  z-index:800;
-  opacity:0;pointer-events:none;transform:translateY(-8px);
+  position:fixed;top:var(--nav-h);
+  background:rgba(16,16,16,0.95);
+  border:1px solid rgba(255,255,255,0.08);
+  border-radius:var(--r2);box-shadow:0 24px 64px rgba(0,0,0,0.7);
+  min-width:340px;max-width:560px;width:max-content;z-index:800;
+  opacity:0;pointer-events:none;transform:translateY(-10px) scale(0.98);
   transition:opacity 0.22s cubic-bezier(0.16,1,0.3,1),transform 0.22s cubic-bezier(0.16,1,0.3,1);
   backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px)
 }
-.nav-dd-panel.open{opacity:1;pointer-events:auto;transform:translateY(0)}
-.nav-dd-panel-inner{max-width:1120px;margin:0 auto;padding:32px 40px}
+.nav-dd-panel.open{opacity:1;pointer-events:auto;transform:translateY(0) scale(1)}
+.nav-dd-panel.wide{min-width:520px}
 
 /* ── Page blur overlay (shows behind open dropdowns) ────── */
 #nav-overlay{
