@@ -1,6 +1,5 @@
 /* ── Reset & Base ──────────────────────────────────────── */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-*{cursor:none !important}
 html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
 body{
   background-color:var(--bg);color:var(--ink);
@@ -101,8 +100,9 @@ ul{list-style:none}
   border-radius:var(--r-full);font-size:11px;font-weight:700;
   letter-spacing:0.07em;text-transform:uppercase
 }
-.chip-amber{background:var(--amber-light);color:var(--amber);border:1.5px solid rgba(245,166,35,0.25)}
-.chip-dot::before{content:'';width:5px;height:5px;border-radius:50%;background:currentColor;flex-shrink:0}
+.chip-amber{background:rgba(255,210,0,0.15);color:#FFD700;border:1.5px solid rgba(255,210,0,0.6);font-weight:800}
+html.light-mode .chip-amber{background:rgba(0,0,0,0.06);color:#0a0a0a;border:1.5px solid rgba(0,0,0,0.18);font-weight:800}
+.chip-dot::before{content:none}
 
 /* ── Scroll reveal — reversible (enter spring, exit snap) ─ */
 .rv,.rv-l,.rv-r,.rv-u{

@@ -17,7 +17,7 @@
             <svg width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
           </button>
           <div class="nav-dd-panel wide" id="panel-conoce">
-
+          <div class="nav-dd-panel-inner">
             <!-- ¿Qué es MultIA? — hover to expand -->
             <div class="conoce-item">
               <div class="conoce-item-hd">
@@ -30,44 +30,34 @@
               </div>
             </div>
 
-            <!-- Modelos disponibles — hover to expand -->
+            <!-- Seguridad de datos — hover to expand -->
             <div class="conoce-item">
               <div class="conoce-item-hd">
-                <span>Modelos disponibles</span>
+                <i data-lucide="shield-check" style="width:15px;height:15px;color:var(--amber);flex-shrink:0"></i>
+                <span>Seguridad de datos</span>
                 <svg width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
               </div>
               <div class="conoce-item-body">
-                <div class="acc-tags">
-                  <span class="acc-tag">Grok 4.1</span>
-                  <span class="acc-tag">SuperGrok Lite</span>
-                  <span class="acc-tag">SuperGrok</span>
-                  <span class="acc-tag">SuperGrok Heavy</span>
-                  <span class="acc-tag">GPT-5.3</span>
-                  <span class="acc-tag">ChatGPT Go</span>
-                  <span class="acc-tag">ChatGPT Plus</span>
-                  <span class="acc-tag">ChatGPT Pro</span>
-                  <span class="acc-tag">Claude Haiku</span>
-                  <span class="acc-tag">Claude Sonnet</span>
-                  <span class="acc-tag">Claude Opus</span>
-                  <span class="acc-tag">Gemini 3 Flash</span>
-                  <span class="acc-tag">Gemini 3.1 Pro</span>
-                  <span class="acc-tag">Google AI Plus</span>
-                  <span class="acc-tag">Google AI Pro</span>
-                  <span class="acc-tag">Google AI Ultra</span>
-                </div>
+                <ul class="conoce-bullets">
+                  <li><i data-lucide="check" class="cb-icon"></i>Tus datos críticos residen en un servidor fuera de la red pública.</li>
+                  <li><i data-lucide="check" class="cb-icon"></i>La IA solo recibe fragmentos aislados, protegiendo el contexto de tus archivos.</li>
+                  <li><i data-lucide="check" class="cb-icon"></i>Tu información no alimenta ni entrena a los modelos IA.</li>
+                </ul>
               </div>
             </div>
 
+          </div><!-- /panel-inner -->
           </div>
         </div>
 
-        <!-- B. LLMs (formerly Modelos) -->
+        <!-- B. Inteligencia disponible -->
         <div class="nav-dd" id="dd-modelos">
           <button class="nav-dd-btn">
-            LLMs
+            Inteligencia disponible
             <svg width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
           </button>
           <div class="nav-dd-panel llm-panel" id="panel-modelos">
+          <div class="nav-dd-panel-inner">
             <div class="llm-grid">
               <div class="llm-col">
                 <div class="llm-provider" style="color:#1D9BF0">GROK</div>
@@ -97,45 +87,7 @@
                 <div class="llm-plan">Google AI Ultra</div>
               </div>
             </div>
-          </div>
-        </div>
-
-        <!-- C. Inteligencia disponible -->
-        <div class="nav-dd" id="dd-recursos">
-          <button class="nav-dd-btn">
-            Inteligencia disponible
-            <svg width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-          </button>
-          <div class="nav-dd-panel" id="panel-recursos">
-            <div class="rec-panel-header">
-              <div class="rec-panel-header-title">Modelos de inteligencia disponibles</div>
-              <div class="rec-panel-header-sub">Actualizado · Abril 2026</div>
-            </div>
-            <div class="rec-panel-body">
-              <div class="rec-panel-cat">xAI</div>
-              <div class="model-row">
-                <div class="model-dot-lg" style="background:#1D9BF0"></div>
-                <div class="model-info"><div class="model-name">Grok</div><div class="model-company">xAI</div></div>
-              </div>
-              <div class="rec-panel-sep"></div>
-              <div class="rec-panel-cat">OpenAI</div>
-              <div class="model-row">
-                <div class="model-dot-lg" style="background:#10A37F"></div>
-                <div class="model-info"><div class="model-name">ChatGPT</div><div class="model-company">OpenAI</div></div>
-              </div>
-              <div class="rec-panel-sep"></div>
-              <div class="rec-panel-cat">Anthropic</div>
-              <div class="model-row">
-                <div class="model-dot-lg" style="background:#CC785C"></div>
-                <div class="model-info"><div class="model-name">Claude</div><div class="model-company">Anthropic</div></div>
-              </div>
-              <div class="rec-panel-sep"></div>
-              <div class="rec-panel-cat">Google</div>
-              <div class="model-row">
-                <div class="model-dot-lg" style="background:#4285F4"></div>
-                <div class="model-info"><div class="model-name">Gemini</div><div class="model-company">Google DeepMind</div></div>
-              </div>
-            </div>
+          </div><!-- /panel-inner -->
           </div>
         </div>
 
@@ -146,6 +98,7 @@
             <svg width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
           </button>
           <div class="nav-dd-panel" id="panel-soluciones">
+          <div class="nav-dd-panel-inner">
             <div class="sol-panel-body">
               <div class="sol-panel-item">
                 <div class="sol-panel-num">01</div>
@@ -168,6 +121,7 @@
                 <div class="sol-panel-desc">IA para marketing y campañas: copywriting, diseño de contenido y estrategia creativa.</div>
               </div>
             </div>
+          </div><!-- /panel-inner -->
           </div>
         </div>
 
@@ -199,25 +153,16 @@
       <summary>Conoce a MultIA</summary>
       <div class="mob-details-body">
         <a class="mob-sub-link" href="#">¿Qué es MultIA?</a>
-        <a class="mob-sub-link" href="#">Modelos disponibles</a>
-      </div>
-    </details>
-    <details class="mob-details">
-      <summary>LLMs</summary>
-      <div class="mob-details-body">
-        <a class="mob-sub-link" href="#">GROK</a>
-        <a class="mob-sub-link" href="#">ChatGPT</a>
-        <a class="mob-sub-link" href="#">Claude</a>
-        <a class="mob-sub-link" href="#">Gemini</a>
+        <a class="mob-sub-link" href="#">Seguridad de datos</a>
       </div>
     </details>
     <details class="mob-details">
       <summary>Inteligencia disponible</summary>
       <div class="mob-details-body">
-        <a class="mob-sub-link" href="#">Grok — xAI</a>
-        <a class="mob-sub-link" href="#">ChatGPT — OpenAI</a>
-        <a class="mob-sub-link" href="#">Claude — Anthropic</a>
-        <a class="mob-sub-link" href="#">Gemini — Google</a>
+        <a class="mob-sub-link" href="#">GROK</a>
+        <a class="mob-sub-link" href="#">ChatGPT</a>
+        <a class="mob-sub-link" href="#">Claude</a>
+        <a class="mob-sub-link" href="#">Gemini</a>
       </div>
     </details>
     <details class="mob-details">

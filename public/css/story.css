@@ -97,9 +97,11 @@
 /* Tags */
 .broken-tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:12px}
 .broken-tag{
+  display:inline-flex;align-items:center;gap:5px;
   padding:4px 10px;border-radius:6px;font-size:12px;font-weight:600;
   border:1.5px solid var(--border);color:var(--ink3);background:none
 }
+.btag-icon{width:13px;height:13px;flex-shrink:0;stroke-width:2}
 .broken-tag.on{background:var(--amber-light);border-color:rgba(245,166,35,0.4);color:#8A5608}
 
 /* Arrow buttons (visible only on mobile via responsive.css) */

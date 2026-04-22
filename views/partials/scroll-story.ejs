@@ -25,7 +25,9 @@
               <p class="ss-step-p"><%= step.body %></p>
               <div class="broken-tags">
                 <% step.tags.forEach(tag => { %>
-                <span class="broken-tag <%= tag.active ? 'on' : '' %>"><%= tag.label %></span>
+                <span class="broken-tag <%= tag.active ? 'on' : '' %>">
+                  <% if (tag.icon) { %><i data-lucide="<%= tag.icon %>" class="btag-icon"></i><% } %><%= tag.label %>
+                </span>
                 <% }) %>
               </div>
               <div class="ss-dots">

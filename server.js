@@ -30,8 +30,8 @@ const models = [
 ];
 
 const features = [
-  { icon: 'image',            name: 'Procesamiento de Imágenes', desc: 'Análisis, edición y generación de imágenes con IA avanzada' },
-  { icon: 'video',            name: 'Edición de Videos',          desc: 'Crear, editar y optimizar videos automáticamente' },
+  { icon: 'image',            name: 'Generación de Imágenes',    desc: 'Crea, edita y transforma imágenes con IA avanzada a partir de texto o referencia visual' },
+  { icon: 'video',            name: 'Voice in Live',              desc: 'Convierte tu voz en comandos en tiempo real: dicta, edita y controla la plataforma sin tocar el teclado' },
   { icon: 'music-2',          name: 'Procesamiento de Audio',     desc: 'Transcripción, análisis y generación de contenido de audio' },
   { icon: 'mic',              name: 'Transcripción Inteligente',  desc: 'Convierte audio y video a texto con precisión profesional' },
   { icon: 'table-2',          name: 'Análisis Excel/Datos',       desc: 'Procesa y analiza grandes datasets con insights automáticos' },
@@ -112,10 +112,10 @@ const storySteps = [
     titleEm: 'generados al instante',
     body: 'Genera, edita y optimiza documentos profesionales. Transcribe reuniones y convierte audio a texto.',
     tags: [
-      { label: 'Word',          active: true },
-      { label: 'PDF',           active: true },
-      { label: 'PPT',           active: true },
-      { label: 'Transcripción', active: true },
+      { label: 'Word',          active: true,  icon: 'file-text'   },
+      { label: 'PDF',           active: true,  icon: 'file-minus'  },
+      { label: 'PPT',           active: true,  icon: 'airplay'     },
+      { label: 'Transcripción', active: true,  icon: 'mic'         },
     ],
   },
   {
