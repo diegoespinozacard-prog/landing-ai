@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/x-icon" href="/img/logoMultia.ico">
+  <title>MultIA — <%= title %></title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="/css/variables.css">
+  <link rel="stylesheet" href="/css/legal.css">
+</head>
+<body>
+
+  <header class="legal-header">
+    <div class="wrap legal-header-inner">
+      <a href="/" class="legal-brand">
+        <img src="/img/logoMultia.webp" alt="MultIA">
+        <span>Mult<em>IA</em></span>
+      </a>
+      <a href="/" class="legal-back">← Volver al inicio</a>
+    </div>
+  </header>
+
+  <main class="legal-main">
+    <div class="wrap">
+      <h1><%= title %></h1>
+      <p class="legal-updated">Última actualización: <%= updated %></p>
+
+      <% sections.forEach(s => { %>
+        <section class="legal-section">
+          <% if (s.h) { %><h2><%= s.h %></h2><% } %>
+          <% if (s.p) s.p.forEach(para => { %>
+            <p><%- para %></p>
+          <% }) %>
+          <% if (s.list) { %>
+            <ul>
+              <% s.list.forEach(li => { %><li><%- li %></li><% }) %>
+            </ul>
+          <% } %>
+        </section>
+      <% }) %>
+    </div>
+  </main>
+
+  <footer class="legal-footer">
+    <div class="wrap legal-footer-inner">
+      <span>© 2026 MultIA · Synopsis S.A. · Todos los derechos reservados</span>
+      <div class="legal-footer-links">
+        <a href="/legal/privacidad" class="<%= slug === 'privacidad' ? 'active' : '' %>">Privacidad</a>
+        <a href="/legal/terminos"   class="<%= slug === 'terminos'   ? 'active' : '' %>">Términos</a>
+        <a href="/legal/cookies"    class="<%= slug === 'cookies'    ? 'active' : '' %>">Cookies</a>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>

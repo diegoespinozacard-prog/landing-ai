@@ -4,7 +4,14 @@
   background:transparent;
   border-bottom:1px solid transparent;
   box-shadow:none;
-  overflow:visible
+  overflow:visible;
+  transition:background 0.22s ease,border-color 0.22s ease
+}
+/* While any dropdown is open, nav fills with the panel color so both feel unified (no seam) */
+#nav.dd-open{
+  background:#101010;
+  border-bottom-color:transparent;
+  backdrop-filter:none;-webkit-backdrop-filter:none
 }
 /* backdrop-filter controlled entirely by JS */
 #nav .wrap{height:100%;overflow:visible}
@@ -27,21 +34,24 @@
 /* Actions */
 .nav-actions{display:flex;align-items:center;gap:8px}
 
-/* Theme toggle button */
-.nav-theme-btn{
-  width:34px;height:34px;border-radius:var(--r);
-  background:none;border:1.5px solid var(--border2);
-  display:flex;align-items:center;justify-content:center;
-  cursor:pointer;color:var(--ink3);
-  transition:background 0.15s,color 0.15s,border-color 0.15s;flex-shrink:0
+/* Translucent amber CTA inside the nav — softer than the solid page variant */
+.nav-actions .btn-amber{
+  background:rgba(245,166,35,0.18);
+  color:var(--amber);
+  box-shadow:none;
+  border:1.5px solid rgba(245,166,35,0.4);
+  backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
+  padding:9px 20px;font-size:13px;font-weight:700
 }
-.nav-theme-btn:hover{background:var(--bg2);color:var(--ink);border-color:var(--amber)}
-.nav-theme-btn i,.nav-theme-btn svg{width:15px;height:15px;stroke-width:1.75}
-/* Show sun in dark mode, moon in light mode */
-.icon-sun{display:block}
-.icon-moon{display:none}
-html.light-mode .icon-sun{display:none}
-html.light-mode .icon-moon{display:block}
+.nav-actions .btn-amber::after{content:none}
+.nav-actions .btn-amber:hover{
+  background:rgba(245,166,35,0.28);
+  color:#FDBE4A;
+  border-color:rgba(245,166,35,0.65);
+  box-shadow:0 0 0 3px rgba(245,166,35,0.08);
+  transform:none
+}
+
 .nav-login{
   background:none;color:var(--ink3);font-size:14px;
   padding:8px 16px;border-radius:var(--r);
@@ -76,49 +86,50 @@ html.light-mode .icon-moon{display:block}
 .nav-dd-btn.open svg{transform:rotate(180deg);opacity:1}
 
 .nav-dd-panel{
-  position:fixed;top:var(--nav-h);
-  background:rgba(16,16,16,0.95);
-  border:1px solid rgba(255,255,255,0.08);
-  border-radius:var(--r2);box-shadow:0 24px 64px rgba(0,0,0,0.7);
-  min-width:340px;max-width:560px;width:max-content;z-index:800;
-  opacity:0;pointer-events:none;transform:translateY(-10px) scale(0.98);
-  transition:opacity 0.22s cubic-bezier(0.16,1,0.3,1),transform 0.22s cubic-bezier(0.16,1,0.3,1);
-  backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px)
+  position:fixed;top:var(--nav-h);left:0;right:0;
+  width:100vw;min-width:0;max-width:none;
+  background:#101010;
+  border:none;
+  border-bottom:1px solid rgba(255,255,255,0.08);
+  border-radius:0 0 var(--r2) var(--r2);
+  box-shadow:0 24px 64px rgba(0,0,0,0.7);
+  padding:28px 0 32px;z-index:800;
+  opacity:0;pointer-events:none;transform:translateY(-10px);
+  transition:opacity 0.22s cubic-bezier(0.16,1,0.3,1),transform 0.22s cubic-bezier(0.16,1,0.3,1)
 }
-.nav-dd-panel.open{opacity:1;pointer-events:auto;transform:translateY(0) scale(1)}
-.nav-dd-panel.wide{min-width:520px}
+.nav-dd-panel.open{opacity:1;pointer-events:auto;transform:translateY(0)}
+
+/* Inner content aligned to page wrap (1120px) */
+.nav-dd-inner{max-width:1120px;margin:0 auto;padding:0 40px;width:100%}
 
 /* ── Page blur overlay (shows behind open dropdowns) ────── */
 #nav-overlay{
   position:fixed;top:var(--nav-h);left:0;right:0;bottom:0;z-index:790;
-  background:rgba(0,0,0,0.55);
-  backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
+  background:rgba(0,0,0,0.72);
+  backdrop-filter:blur(18px) saturate(1.2);-webkit-backdrop-filter:blur(18px) saturate(1.2);
   opacity:0;pointer-events:none;
   transition:opacity 0.25s ease
 }
 #nav-overlay.active{opacity:1;pointer-events:auto}
 
-/* ── Conoce — hover-expand items ──────────────────────── */
-.conoce-item{border-bottom:1px solid rgba(255,255,255,0.05)}
-.conoce-item:last-child{border-bottom:none}
+/* ── Conoce — horizontal cards, always expanded ───────── */
+.conoce-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+.conoce-item{
+  padding:18px 22px;border-radius:var(--r2);
+  background:rgba(255,255,255,0.02);
+  border:1px solid rgba(255,255,255,0.06);
+  transition:background 0.2s,border-color 0.2s
+}
+.conoce-item:hover{background:rgba(255,255,255,0.04);border-color:rgba(255,255,255,0.1)}
 .conoce-item-hd{
-  display:flex;align-items:center;gap:9px;padding:13px 20px;
-  cursor:default;transition:background 0.15s
+  display:flex;align-items:center;gap:10px;margin-bottom:10px;cursor:default
 }
-.conoce-item:hover .conoce-item-hd{background:rgba(255,255,255,0.04)}
-.conoce-item-logo{height:18px;width:auto;flex-shrink:0}
-.conoce-item-hd > span{flex:1;font-size:13px;font-weight:600;color:var(--ink2)}
-.conoce-item-hd svg{flex-shrink:0;opacity:0.4;transition:transform 0.22s}
-.conoce-item:hover .conoce-item-hd svg{transform:rotate(180deg);opacity:1}
+.conoce-item-logo{height:20px;width:auto;flex-shrink:0}
+.conoce-item-hd > span{flex:1;font-size:14px;font-weight:700;color:var(--ink)}
 
-.conoce-item-body{
-  max-height:0;overflow:hidden;opacity:0;
-  transition:max-height 0.32s ease,opacity 0.22s ease,padding 0.22s ease;
-  padding:0 20px
-}
-.conoce-item:hover .conoce-item-body{max-height:320px;opacity:1;padding:0 20px 16px}
-.conoce-item-body p{font-size:13px;color:var(--ink3);line-height:1.75;margin-top:10px}
-.conoce-bullets{display:flex;flex-direction:column;gap:10px;margin-top:4px;list-style:none;padding:0}
+.conoce-item-body{padding:0}
+.conoce-item-body p{font-size:13px;color:var(--ink3);line-height:1.7}
+.conoce-bullets{display:flex;flex-direction:column;gap:8px;list-style:none;padding:0}
 .conoce-bullets li{display:flex;align-items:flex-start;gap:8px;font-size:13px;color:var(--ink3);line-height:1.6}
 .cb-icon{width:13px;height:13px;flex-shrink:0;margin-top:2px;color:var(--amber);stroke-width:2.5}
 
@@ -130,8 +141,7 @@ html.light-mode .icon-moon{display:block}
 }
 
 /* ── LLMs panel ────────────────────────────────────────── */
-.llm-panel{min-width:600px !important}
-.llm-grid{display:grid;grid-template-columns:repeat(4,1fr);padding:8px}
+.llm-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
 .llm-col{padding:12px 14px}
 .llm-col:not(:last-child){border-right:1px solid rgba(255,255,255,0.05)}
 .llm-provider{
@@ -172,17 +182,29 @@ html.light-mode .icon-moon{display:block}
 }
 .model-badge.best{background:var(--amber-light);border-color:rgba(245,166,35,0.2);color:var(--amber)}
 
-/* ── Soluciones ────────────────────────────────────────── */
-.sol-panel-body{padding:12px}
+/* ── Soluciones — 4 horizontal cards ──────────────────── */
+.sol-panel-body{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
 .sol-panel-item{
-  padding:12px 14px;border-radius:var(--r);border:1px solid rgba(255,255,255,0.05);
-  margin-bottom:8px;transition:border-color 0.15s,background 0.15s;cursor:pointer
+  padding:18px 18px 16px;border-radius:var(--r2);
+  border:1px solid rgba(255,255,255,0.06);
+  background:rgba(255,255,255,0.02);
+  transition:border-color 0.15s,background 0.15s;cursor:pointer
 }
-.sol-panel-item:last-child{margin-bottom:0}
 .sol-panel-item:hover{border-color:var(--amber-ring);background:var(--amber-light)}
-.sol-panel-num{
-  font-family:var(--f-display);font-size:11px;font-weight:700;
-  color:var(--amber);letter-spacing:0.08em;margin-bottom:3px
+.sol-panel-item:hover .sol-panel-icon{
+  background:linear-gradient(135deg,rgba(245,166,35,0.25),rgba(245,166,35,0.08));
+  border-color:rgba(245,166,35,0.5)
+}
+.sol-panel-icon{
+  width:38px;height:38px;border-radius:10px;
+  background:linear-gradient(135deg,rgba(245,166,35,0.15),rgba(245,166,35,0.04));
+  border:1.5px solid rgba(245,166,35,0.22);
+  display:flex;align-items:center;justify-content:center;
+  margin-bottom:12px;
+  transition:background 0.2s,border-color 0.2s
+}
+.sol-panel-icon i,.sol-panel-icon svg{
+  width:18px;height:18px;color:var(--amber);stroke-width:1.75
 }
 .sol-panel-title{font-size:13px;font-weight:700;color:var(--ink);margin-bottom:4px;font-family:var(--f-display)}
 .sol-panel-desc{font-size:12px;color:var(--ink3);line-height:1.6}
@@ -225,42 +247,3 @@ html.light-mode .icon-moon{display:block}
   border-top:1px solid rgba(255,255,255,0.06)
 }
 .mob-cta-row .btn{width:100%;padding:14px;border-radius:var(--r2);font-size:15px}
-
-/* ══ LIGHT MODE OVERRIDES ═══════════════════════════════════ */
-html.light-mode .nav-dd-btn:hover,
-html.light-mode .nav-dd-btn.open{ background:rgba(0,0,0,0.05);color:var(--ink) }
-
-html.light-mode .nav-dd-panel{
-  background:rgba(232,229,220,0.99);
-  border-color:rgba(0,0,0,0.09);
-  box-shadow:0 24px 64px rgba(0,0,0,0.14)
-}
-
-html.light-mode .conoce-item{ border-bottom-color:rgba(0,0,0,0.07) }
-html.light-mode .conoce-item:hover .conoce-item-hd{ background:rgba(0,0,0,0.03) }
-
-html.light-mode .acc-tag{
-  background:rgba(0,0,0,0.05);border-color:rgba(0,0,0,0.09)
-}
-
-html.light-mode .llm-col:not(:last-child){ border-right-color:rgba(0,0,0,0.07) }
-html.light-mode .llm-provider{ border-bottom-color:rgba(0,0,0,0.07) }
-html.light-mode .llm-plan:hover{ background:rgba(0,0,0,0.04);color:var(--ink) }
-
-html.light-mode .rec-panel-header{ border-bottom-color:rgba(0,0,0,0.07) }
-html.light-mode .rec-panel-sep{ background:rgba(0,0,0,0.07) }
-html.light-mode .model-row:hover{ background:rgba(0,0,0,0.04) }
-html.light-mode .model-badge{ background:rgba(0,0,0,0.05);border-color:rgba(0,0,0,0.09) }
-
-html.light-mode .sol-panel-item{ border-color:rgba(0,0,0,0.09) }
-html.light-mode .sol-panel-item:hover{ border-color:var(--amber);background:var(--amber-light) }
-
-html.light-mode #nav-overlay{ background:rgba(0,0,0,0.18) }
-
-html.light-mode .nav-mobile-menu{
-  background:rgba(232,229,220,0.99);
-}
-html.light-mode .mob-link:hover{ background:rgba(0,0,0,0.04) }
-html.light-mode .mob-details[open] summary{ background:rgba(0,0,0,0.03) }
-html.light-mode .mob-sub-link:hover{ background:rgba(0,0,0,0.04);color:var(--ink) }
-html.light-mode .mob-cta-row{ border-top-color:rgba(0,0,0,0.08) }

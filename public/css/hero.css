@@ -5,12 +5,14 @@
   align-items:center;justify-content:center
 }
 
-/* Parallax video — full bleed */
+/* Parallax video — fits without cropping, quality preserved */
 .hv-video-wrap{
   position:absolute;inset:0;width:100%;height:100%;
+  background:var(--bg)
 }
 .hv-video-wrap video{
-  position:absolute;inset:0;width:100%;height:100%;object-fit:cover
+  position:absolute;inset:0;width:100%;height:100%;
+  object-fit:contain;object-position:center
 }
 
 /* Dark gradient overlay — subtle vignette only */

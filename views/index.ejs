@@ -19,6 +19,7 @@
   <link rel="stylesheet" href="/css/modal.css">
   <link rel="stylesheet" href="/css/footer.css">
   <link rel="stylesheet" href="/css/world-real.css">
+  <link rel="stylesheet" href="/css/videos.css">
   <link rel="stylesheet" href="/css/responsive.css">
 </head>
 <body>
@@ -32,6 +33,7 @@
   <%- include('partials/benefits',     { benefits }) %>
   <%- include('partials/world-real') %>
   <%- include('partials/profiles',     { userProfiles }) %>
+  <%- include('partials/videos',       { tutorialVideos }) %>
   <%- include('partials/footer') %>
   <%- include('partials/modal',        { pricingPlans }) %>
   <%- include('partials/enterprise-modal') %>
@@ -39,24 +41,50 @@
   <script>
     (function(){
       var nav = document.getElementById('nav');
-      var hero = document.getElementById('hero-video');
-      if (!nav || !hero) return;
+      if (nav) {
+        nav.style.transition = 'transform 0.35s cubic-bezier(0.16,1,0.3,1), opacity 0.25s ease';
 
-      // Start hidden
-      nav.style.opacity = '0';
-      nav.style.transition = 'opacity 0.6s ease';
-      nav.style.pointerEvents = 'none';
+        function hideNav(){
+          nav.style.opacity = '0';
+          nav.style.transform = 'translateY(-100%)';
+          nav.style.pointerEvents = 'none';
+        }
+        function showNav(){
+          nav.style.opacity = '1';
+          nav.style.transform = 'translateY(0)';
+          nav.style.pointerEvents = '';
+        }
 
-      // Show when hero-video scrolls out of view, hide when back
-      var observer = new IntersectionObserver(function(entries){
-        var visible = entries[0].isIntersecting;
-        nav.style.opacity = visible ? '0' : '1';
-        nav.style.pointerEvents = visible ? 'none' : '';
-      }, { threshold: 0.05 });
+        // Start hidden — nav never appears without scroll activity
+        hideNav();
 
-      observer.observe(hero);
+        var lastY = window.scrollY;
+        var ticking = false;
+        var TOP_THRESHOLD = 80;
+        var JITTER = 4;
 
-      // Also ensure video loops after first play
+        function update(){
+          ticking = false;
+          // Never hide while a dropdown is open
+          if (nav.classList.contains('dd-open')) { lastY = window.scrollY; return; }
+
+          var y = window.scrollY;
+          var delta = y - lastY;
+          if (Math.abs(delta) < JITTER) return;
+
+          if (y < TOP_THRESHOLD)      hideNav();    // no scroll / at top
+          else if (delta < 0)         showNav();    // scrolling up
+          else                        hideNav();    // scrolling down
+
+          lastY = y;
+        }
+
+        window.addEventListener('scroll', function(){
+          if (!ticking) { requestAnimationFrame(update); ticking = true; }
+        }, { passive: true });
+      }
+
+      // Ensure hero video loops after first play
       var vid = document.getElementById('hero-vid');
       if (vid) {
         vid.addEventListener('ended', function onFirstEnd(){
