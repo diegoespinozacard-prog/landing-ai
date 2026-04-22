@@ -1,0 +1,74 @@
+[
+  {
+    "fecha": "22-04-2026, 12:40:46 p. m.",
+    "nombre": "Isaac",
+    "apellido": "Cárdenas",
+    "telefono": "+51 959 555 523",
+    "empresa": "Synopsis S.A.",
+    "cargo": "CCO",
+    "email": "diespinoza@synopsis.ws"
+  },
+  {
+    "fecha": "22-04-2026, 2:00:00 p. m.",
+    "nombre": "NVJKDBJKN",
+    "apellido": "FHFHFH",
+    "telefono": "+51 655 465 156",
+    "empresa": "NSDJFVBJFDVBKDBNVJ",
+    "cargo": "VDFKCFJJBSEDJL",
+    "email": "HEROVNSDIUH@SYNOPSIS.WS"
+  },
+  {
+    "fecha": "22-04-2026, 2:02:01 p. m.",
+    "nombre": "Test",
+    "apellido": "Prueba",
+    "telefono": "+51 999 999 999",
+    "empresa": "EmpresaTest",
+    "cargo": "Tester",
+    "email": "test@empresatest.com"
+  },
+  {
+    "fecha": "22-04-2026, 2:10:41 p. m.",
+    "nombre": "Juan",
+    "apellido": "Garc�a",
+    "telefono": "+51 959 950 520",
+    "empresa": "FEPCMAC",
+    "cargo": "Gerente",
+    "email": "juan@fepcmac.com"
+  },
+  {
+    "fecha": "22-04-2026, 2:12:19 p. m.",
+    "nombre": "Rafael",
+    "apellido": "Bravo",
+    "telefono": "+51 000 000 000",
+    "empresa": "Synopsis  S.A.",
+    "cargo": "CTO",
+    "email": "rabravo@synopsis.ws"
+  },
+  {
+    "fecha": "22-04-2026, 2:23:52 p. m.",
+    "nombre": "María",
+    "apellido": "García",
+    "telefono": "+51 959 950 520",
+    "empresa": "FEPCMAC",
+    "cargo": "Gerente",
+    "email": "maria@fepcmac.com"
+  },
+  {
+    "fecha": "22-04-2026, 2:23:59 p. m.",
+    "nombre": "María",
+    "apellido": "García",
+    "telefono": "+51 959 950 520",
+    "empresa": "FEPCMAC",
+    "cargo": "Gerente",
+    "email": "maria@fepcmac.com"
+  },
+  {
+    "fecha": "22-04-2026, 2:29:33 p. m.",
+    "nombre": "Daniella",
+    "apellido": "Aguilar",
+    "telefono": "+51 978 745 632",
+    "empresa": "Synopsis S.A",
+    "cargo": "Marketing",
+    "email": "daaguilar@synopsis.ws"
+  }
+]

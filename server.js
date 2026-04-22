@@ -1,7 +1,35 @@
-const express = require('express');
-const path    = require('path');
-const fs      = require('fs');
-const app     = express();
+const express  = require('express');
+const path     = require('path');
+const fs       = require('fs');
+const https    = require('https');
+const querystring = require('querystring');
+const app      = express();
+
+const GSCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwlHc-Vi3gShgytoWWcIoL_8Qord3A5fOO9iQ2HT1z56InMJkfkAw_0LSvWR9IjKJbNkQ/exec';
+function submitToGoogleSheet(record) {
+  const body = JSON.stringify(record);
+  function doRequest(url) {
+    const parsed = new (require('url').URL)(url);
+    const options = {
+      hostname: parsed.hostname,
+      path: parsed.pathname + parsed.search,
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Content-Length': Buffer.byteLength(body),
+      },
+    };
+    const req = https.request(options, (res) => {
+      if (res.statusCode === 302 && res.headers.location) {
+        doRequest(res.headers.location);
+      }
+    });
+    req.on('error', (e) => console.error('Google Sheet submit error:', e.message));
+    req.write(body);
+    req.end();
+  }
+  doRequest(GSCRIPT_URL);
+}
 
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
@@ -240,6 +268,9 @@ app.post('/api/leads', (req, res) => {
       [esc(r.fecha), esc(r.nombre), esc(r.apellido), esc(r.telefono), esc(r.empresa), esc(r.cargo), esc(r.email)].join(',')
     ).join('\n');
     fs.writeFileSync(LEADS_CSV, CSV_HEADER + rows + '\n', 'utf8');
+
+    // 3. Mirror to Google Sheet via Google Form submit
+    submitToGoogleSheet(record);
 
     res.json({ ok: true });
   } catch(err) {
