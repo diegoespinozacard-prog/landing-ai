@@ -129,7 +129,7 @@
 ══════════════════════════════════════════════════════════ */
 #profiles{padding:96px 0;background:var(--bg)}
 .prof-grid{
-  display:grid;grid-template-columns:repeat(3,1fr);gap:20px
+  display:grid;grid-template-columns:repeat(4,1fr);gap:20px
 }
 .prof-card{
   background:var(--white);border:1.5px solid var(--border);

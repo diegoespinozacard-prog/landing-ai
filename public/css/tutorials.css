@@ -55,6 +55,12 @@
   color: var(--ink);
   line-height: 1.4;
 }
+.tut-desc {
+  font-size: 12px;
+  color: var(--ink3);
+  line-height: 1.55;
+  margin-top: 3px;
+}
 
 /* Play overlay button */
 .tut-card { cursor: pointer; }
