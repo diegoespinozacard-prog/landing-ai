@@ -1,0 +1,65 @@
+<section id="videos" class="sec-zoom">
+  <div class="wrap">
+    <div class="sec-header rv">
+      <span class="chip chip-amber chip-dot" style="margin-bottom:16px">Tutoriales</span>
+      <h2 class="ttl hd-zoom" style="margin-bottom:12px">Míralo en <em style="font-style:normal;color:var(--amber)">2 minutos</em></h2>
+      <p class="lead rv">Demos reales de cómo tu equipo usa MultIA en el día a día.</p>
+    </div>
+
+    <div class="vid-grid stagger-grid">
+      <% tutorialVideos.forEach((v, i) => { %>
+      <div class="vid-card <%= i % 2 === 0 ? 'rv-l' : 'rv-r' %> d<%= (i % 3) + 1 %>">
+        <div class="vid-media">
+          <video
+            src="<%= v.src %>"
+            preload="metadata"
+            controls
+            muted
+            loop
+            playsinline>
+          </video>
+        </div>
+        <div class="vid-body">
+          <div class="vid-icon"><i data-lucide="<%= v.icon %>"></i></div>
+          <div class="vid-title"><%= v.title %></div>
+          <p class="vid-desc"><%= v.desc %></p>
+        </div>
+      </div>
+      <% }) %>
+    </div>
+  </div>
+</section>
+
+<script>
+  (function(){
+    var section = document.getElementById('videos');
+    if (!section) return;
+    var videos = section.querySelectorAll('.vid-media video');
+    if (!videos.length) return;
+
+    var started = false;
+
+    function startAll(){
+      if (started) return;
+      started = true;
+      // Wait until every video is buffered enough to start
+      Promise.all(Array.prototype.map.call(videos, function(v){
+        if (v.readyState >= 3) return Promise.resolve();
+        return new Promise(function(resolve){
+          v.addEventListener('canplay', resolve, { once: true });
+        });
+      })).then(function(){
+        // Reset to frame 0 and fire .play() on all in the same animation frame
+        videos.forEach(function(v){ try { v.currentTime = 0; } catch(e){} });
+        requestAnimationFrame(function(){
+          videos.forEach(function(v){ v.play().catch(function(){}); });
+        });
+      });
+    }
+
+    // Start a tick before visible so buffering has room
+    new IntersectionObserver(function(entries){
+      if (entries[0].isIntersecting) startAll();
+    }, { rootMargin: '200px 0px', threshold: 0 }).observe(section);
+  })();
+</script>

@@ -112,9 +112,9 @@ const storySteps = [
     titleEm: 'de contenido multimedia',
     body: 'Analiza y edita imágenes con IA y transcribe audio con precisión.',
     tags: [
-      { label: 'Imágenes', active: true  },
-      { label: 'Audio',    active: true  },
-      { label: 'OCR',      active: false },
+      { label: 'Imágenes', active: true,  icon: 'image'       },
+      { label: 'Audio',    active: true,  icon: 'music'       },
+      { label: 'OCR',      active: false, icon: 'scan-text'   },
     ],
   },
   {
@@ -124,9 +124,9 @@ const storySteps = [
     titleEm: 'genera dashboards',
     body: 'Procesa Excels y crea dashboards interactivos.',
     tags: [
-      { label: 'Excel',      active: true  },
-      { label: 'Dashboards', active: true  },
-      { label: 'Reportes',   active: true  },
+      { label: 'Excel',      active: true,  icon: 'file-spreadsheet' },
+      { label: 'Dashboards', active: true,  icon: 'layout-dashboard' },
+      { label: 'Reportes',   active: true,  icon: 'bar-chart-3'      },
     ],
   },
   {
@@ -149,10 +149,10 @@ const storySteps = [
     titleEm: 'código en minutos',
     body: 'Genera, revisa y optimiza código en múltiples lenguajes.',
     tags: [
-      { label: 'Python',     active: true  },
-      { label: 'JavaScript', active: true  },
-      { label: 'HTML/CSS',   active: true  },
-      { label: 'SQL',        active: false },
+      { label: 'Python',     active: true,  icon: 'braces'    },
+      { label: 'JavaScript', active: true,  icon: 'code-2'    },
+      { label: 'HTML/CSS',   active: true,  icon: 'file-code' },
+      { label: 'SQL',        active: false, icon: 'database'  },
     ],
   },
   {
@@ -162,9 +162,9 @@ const storySteps = [
     titleEm: 'proyectos con tu equipo',
     body: 'Comparte proyectos con tus colaboradores, permitiéndoles tener acceso a los archivos e historial del chat.',
     tags: [
-      { label: 'Proyectos propios',    active: true  },
-      { label: 'Proyectos compartidos', active: true  },
-      { label: 'Historial',            active: false },
+      { label: 'Proyectos propios',     active: true,  icon: 'folder'         },
+      { label: 'Proyectos compartidos', active: true,  icon: 'users'          },
+      { label: 'Historial',             active: false, icon: 'history'        },
     ],
   },
 ];
@@ -222,10 +222,169 @@ const pricingPlans = [
   },
 ];
 
+/* ── Video tutorials ───────────────────────────────────── */
+
+const tutorialVideos = [
+  {
+    title: 'Entra a un proyecto',
+    desc: 'Únete a los espacios de trabajo de tu equipo y accede al historial compartido en segundos.',
+    icon: 'users',
+    src: '/img/Como%20entrar%20a%20un%20proyecto.mp4',
+  },
+  {
+    title: 'Genera imágenes con IA',
+    desc: 'Convierte una idea o una referencia en visuales profesionales sin salir de la plataforma.',
+    icon: 'image',
+    src: '/img/Generar%20im%C3%A1genes.mp4',
+  },
+  {
+    title: 'Construye un dashboard',
+    desc: 'Transforma un Excel en un dashboard interactivo con insights automáticos en tiempo real.',
+    icon: 'layout-dashboard',
+    src: '/img/Tutorial%20Dashboard.mp4',
+  },
+];
+
+/* ── Legal documents ───────────────────────────────────── */
+
+const legalDocs = {
+  privacidad: {
+    title: 'Política de Privacidad',
+    chip: 'Privacidad',
+    updated: '22 de abril de 2026',
+    sections: [
+      { h: '1. Introducción', p: [
+        'En <strong>MultIA</strong>, operada por Synopsis S.A., nos tomamos la privacidad de nuestros usuarios con la máxima seriedad. Esta política describe qué datos recopilamos, cómo los usamos y qué derechos tienes sobre ellos.',
+        'Al utilizar nuestra plataforma aceptas las prácticas descritas aquí. Si no estás de acuerdo, te pedimos no usar el servicio.'
+      ]},
+      { h: '2. Datos que recopilamos', p: [
+        'Recopilamos solo la información necesaria para operar y mejorar el servicio:'
+      ], list: [
+        '<strong>Datos de cuenta:</strong> nombre, correo corporativo, empresa, cargo y teléfono.',
+        '<strong>Datos de uso:</strong> interacciones con la plataforma, modelos utilizados y métricas de rendimiento agregadas.',
+        '<strong>Datos técnicos:</strong> dirección IP, tipo de dispositivo, navegador y cookies.',
+        '<strong>Contenido del usuario:</strong> archivos, prompts y conversaciones que decidas procesar en la plataforma.'
+      ]},
+      { h: '3. Cómo usamos tus datos', list: [
+        'Prestar y mantener el servicio de MultIA.',
+        'Procesar tus solicitudes a través de los modelos de inteligencia artificial integrados.',
+        'Prevenir fraudes, abusos y proteger la integridad de la plataforma.',
+        'Comunicarte actualizaciones, cambios contractuales y notificaciones de seguridad.',
+        'Cumplir obligaciones legales aplicables.'
+      ]},
+      { h: '4. Bóveda digital y Zero Trust', p: [
+        'Los datos críticos de tu organización residen en un entorno de uso exclusivo, aislado de la red pública. La IA externa sólo recibe fragmentos descontextualizados, nunca el contenido completo ni el contexto corporativo.',
+        'Tu información <strong>nunca</strong> alimenta ni entrena modelos públicos de terceros.'
+      ]},
+      { h: '5. Compartir información', p: [
+        'No vendemos ni alquilamos tus datos personales. Sólo los compartimos con:'
+      ], list: [
+        'Proveedores de infraestructura que operan bajo acuerdos de confidencialidad.',
+        'Autoridades competentes cuando exista obligación legal.',
+        'Terceros autorizados explícitamente por ti (por ejemplo, al conectar integraciones).'
+      ]},
+      { h: '6. Tus derechos', p: [
+        'Puedes ejercer en cualquier momento tus derechos de acceso, rectificación, eliminación, oposición y portabilidad escribiendo a <a href="mailto:soporteventas@synopsis.ws">soporteventas@synopsis.ws</a>. Atendemos solicitudes dentro de los plazos previstos por la ley peruana de protección de datos (Ley 29733) y normativas equivalentes.'
+      ]},
+      { h: '7. Retención', p: [
+        'Conservamos tus datos durante el tiempo necesario para cumplir los fines descritos y las obligaciones legales. Al cerrar tu cuenta, eliminamos tu información dentro de los 90 días, salvo que la ley exija un plazo mayor.'
+      ]},
+      { h: '8. Contacto', p: [
+        'Para cualquier duda sobre esta política, escríbenos a <a href="mailto:soporteventas@synopsis.ws">soporteventas@synopsis.ws</a> o llámanos al +51 959 950 520.',
+        'Av. Dionisio Derteano 184, San Isidro, Lima, Perú.'
+      ]},
+    ]
+  },
+
+  terminos: {
+    title: 'Términos y Condiciones',
+    chip: 'Términos',
+    updated: '22 de abril de 2026',
+    sections: [
+      { h: '1. Aceptación', p: [
+        'Estos términos regulan el uso de la plataforma <strong>MultIA</strong>, operada por Synopsis S.A. Al crear una cuenta o utilizar el servicio, aceptas estos términos en su totalidad.'
+      ]},
+      { h: '2. Descripción del servicio', p: [
+        'MultIA es un workplace productivo que unifica múltiples modelos de inteligencia artificial (ChatGPT, Claude, Gemini, Grok, entre otros) en una única interfaz, con herramientas de automatización, agentes de conocimiento y controles de seguridad empresarial.'
+      ]},
+      { h: '3. Cuentas de usuario', list: [
+        'Debes ser mayor de edad y tener capacidad legal para contratar.',
+        'Te comprometes a proporcionar información veraz y a mantenerla actualizada.',
+        'Eres responsable de la confidencialidad de tus credenciales y de toda actividad que ocurra bajo tu cuenta.',
+        'Nos reservamos el derecho de suspender cuentas que infrinjan estos términos o realicen actividades fraudulentas.'
+      ]},
+      { h: '4. Uso aceptable', p: [
+        'No está permitido:'
+      ], list: [
+        'Utilizar la plataforma para fines ilícitos, difamatorios o que vulneren derechos de terceros.',
+        'Realizar ingeniería inversa, descompilar o intentar extraer el código fuente.',
+        'Revender, sublicenciar o redistribuir el servicio sin autorización escrita.',
+        'Generar contenido que infrinja leyes aplicables, derechos de propiedad intelectual o políticas de los modelos integrados.'
+      ]},
+      { h: '5. Planes y pagos', p: [
+        'Los planes vigentes (Pro, Max y Enterprise) se facturan mensual o anualmente según lo contratado. Los precios pueden actualizarse previa notificación con al menos 30 días de anticipación. Puedes cancelar en cualquier momento; la cancelación surte efecto al cierre del ciclo de facturación en curso.'
+      ]},
+      { h: '6. Propiedad intelectual', p: [
+        'MultIA, su marca, logotipo, código y contenido propietario son de Synopsis S.A. El contenido que generes o subas sigue siendo tuyo; al usar el servicio nos otorgas una licencia limitada para procesarlo únicamente con la finalidad de ejecutar tus solicitudes.'
+      ]},
+      { h: '7. Disponibilidad y limitación de responsabilidad', p: [
+        'Nos esforzamos por mantener el servicio disponible 24/7, pero no garantizamos una disponibilidad ininterrumpida. En ningún caso Synopsis S.A. será responsable por daños indirectos, lucro cesante o pérdida de datos, más allá del monto efectivamente pagado por el usuario en los últimos 12 meses.'
+      ]},
+      { h: '8. Modificaciones', p: [
+        'Podemos actualizar estos términos. Publicaremos los cambios en esta página e indicaremos la fecha de última actualización. El uso continuado del servicio tras la publicación implica la aceptación de los nuevos términos.'
+      ]},
+      { h: '9. Ley aplicable', p: [
+        'Estos términos se rigen por las leyes de la República del Perú. Cualquier controversia se someterá a los tribunales competentes de la ciudad de Lima.'
+      ]},
+      { h: '10. Contacto', p: [
+        'Escríbenos a <a href="mailto:soporteventas@synopsis.ws">soporteventas@synopsis.ws</a> para cualquier consulta relacionada con estos términos.'
+      ]},
+    ]
+  },
+
+  cookies: {
+    title: 'Política de Cookies',
+    chip: 'Cookies',
+    updated: '22 de abril de 2026',
+    sections: [
+      { h: '1. ¿Qué son las cookies?', p: [
+        'Las cookies son pequeños archivos de texto que un sitio web almacena en tu dispositivo cuando lo visitas. Permiten recordar preferencias, analizar el uso de la plataforma y ofrecer una experiencia personalizada.'
+      ]},
+      { h: '2. Cookies que utilizamos', p: [
+        'En MultIA empleamos sólo las cookies estrictamente necesarias para el funcionamiento del servicio y algunas de analítica agregada:'
+      ], list: [
+        '<strong>Esenciales:</strong> mantienen tu sesión iniciada y aseguran la navegación segura. No se pueden desactivar.',
+        '<strong>Preferencias:</strong> recuerdan ajustes como idioma o vista preferida.',
+        '<strong>Analíticas:</strong> nos ayudan a entender cómo se usa la plataforma de forma agregada y anónima para mejorarla.'
+      ]},
+      { h: '3. Cookies de terceros', p: [
+        'Algunos servicios integrados (por ejemplo, proveedores de pago o análisis) pueden instalar cookies propias bajo sus propias políticas. Sólo trabajamos con proveedores que cumplen estándares reconocidos de protección de datos.'
+      ]},
+      { h: '4. Cómo gestionar las cookies', p: [
+        'Puedes aceptar, rechazar o eliminar las cookies desde la configuración de tu navegador. Ten en cuenta que desactivar las cookies esenciales puede afectar el funcionamiento del servicio.',
+        'Guías oficiales: <a href="https://support.google.com/chrome/answer/95647" target="_blank" rel="noopener">Chrome</a>, <a href="https://support.mozilla.org/es/kb/proteccion-antirrastreo-mejorada-firefox-escritorio" target="_blank" rel="noopener">Firefox</a>, <a href="https://support.apple.com/es-es/guide/safari/sfri11471/mac" target="_blank" rel="noopener">Safari</a>, <a href="https://support.microsoft.com/es-es/microsoft-edge" target="_blank" rel="noopener">Edge</a>.'
+      ]},
+      { h: '5. Cambios en esta política', p: [
+        'Podemos actualizar esta política cuando incorporemos nuevos servicios o tecnologías. La fecha de última actualización aparece al inicio del documento.'
+      ]},
+      { h: '6. Contacto', p: [
+        'Para cualquier consulta sobre cookies escríbenos a <a href="mailto:soporteventas@synopsis.ws">soporteventas@synopsis.ws</a>.'
+      ]},
+    ]
+  }
+};
+
 /* ── Routes ────────────────────────────────────────────── */
 
 app.get('/', (req, res) => {
-  res.render('index', { models, features, userProfiles, benefits, pricingPlans, storySteps });
+  res.render('index', { models, features, userProfiles, benefits, pricingPlans, storySteps, tutorialVideos });
+});
+
+app.get('/legal/:slug', (req, res) => {
+  const slug = req.params.slug;
+  const doc = legalDocs[slug];
+  if (!doc) return res.status(404).send('Documento no encontrado');
+  res.render('legal', { ...doc, slug });
 });
 
 const PERSONAL_DOMAINS = new Set([
@@ -298,7 +457,7 @@ app.get('/admin/leads/download', (req, res) => {
 
 /* ── Start ─────────────────────────────────────────────── */
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3800;
 app.listen(PORT, () => {
   console.log(`MultIA running at http://localhost:${PORT}`);
 });

@@ -101,7 +101,6 @@ ul{list-style:none}
   letter-spacing:0.07em;text-transform:uppercase
 }
 .chip-amber{background:rgba(255,210,0,0.15);color:#FFD700;border:1.5px solid rgba(255,210,0,0.6);font-weight:800}
-html.light-mode .chip-amber{background:rgba(0,0,0,0.06);color:#0a0a0a;border:1.5px solid rgba(0,0,0,0.18);font-weight:800}
 .chip-dot::before{content:none}
 
 /* ── Scroll reveal — reversible (enter spring, exit snap) ─ */
@@ -206,30 +205,3 @@ html.light-mode .chip-amber{background:rgba(0,0,0,0.06);color:#0a0a0a;border:1.5
 }
 .float-anim{animation:float-gentle 3.2s ease-in-out infinite}
 .glow-anim{animation:glow-pulse 2.8s ease-in-out infinite}
-
-/* ── Light Mode ─────────────────────────────────────────── */
-html.light-mode{
-  --bg:#E8E5DC;
-  --bg2:#DDD9CF;
-  --bg3:#D2CEC3;
-  --white:#EDEAE1;
-  --ink:#18170F;
-  --ink2:#3B3930;
-  --ink3:#78746E;
-  --ink4:#AAA79F;
-  --border:rgba(0,0,0,0.09);
-  --border2:rgba(0,0,0,0.16);
-  --sh1:0 1px 4px rgba(0,0,0,0.08);
-  --sh2:0 4px 20px rgba(0,0,0,0.1);
-  --sh3:0 10px 40px rgba(0,0,0,0.14);
-  --sh4:0 24px 80px rgba(0,0,0,0.18);
-  --sh-amber:0 8px 40px rgba(245,166,35,0.3)
-}
-html.light-mode body{
-  background-image:radial-gradient(rgba(0,0,0,0.055) 1px,transparent 1px)
-}
-html.light-mode body::before{
-  background:radial-gradient(ellipse,rgba(245,166,35,0.07) 0%,transparent 68%)
-}
-html.light-mode ::-webkit-scrollbar-track{background:var(--bg)}
-html.light-mode ::-webkit-scrollbar-thumb{background:rgba(0,0,0,0.18)}

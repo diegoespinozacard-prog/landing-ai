@@ -1,14 +1,17 @@
 /* ── Nav — hover dropdowns + blur overlay ───────────────── */
 (function () {
+  var nav      = document.getElementById('nav');
   var overlay  = document.getElementById('nav-overlay');
   var openId   = null;
   var closeTimer = null;
 
   function showOverlay() {
     if (overlay) overlay.classList.add('active');
+    if (nav) nav.classList.add('dd-open');
   }
   function hideOverlay() {
     if (overlay) overlay.classList.remove('active');
+    if (nav) nav.classList.remove('dd-open');
   }
 
   function openDD(id) {
@@ -18,11 +21,6 @@
     var panel = document.getElementById('panel-' + id);
     var btn   = document.querySelector('#dd-' + id + ' .nav-dd-btn');
     if (!panel || !btn) return;
-    var r = btn.getBoundingClientRect();
-    var left = r.left;
-    var panelW = panel.offsetWidth || 340;
-    if (left + panelW > window.innerWidth - 16) left = window.innerWidth - panelW - 16;
-    panel.style.left = Math.max(8, left) + 'px';
     panel.classList.add('open');
     btn.classList.add('open');
     openId = id;
@@ -79,20 +77,6 @@
   document.addEventListener('keydown', function (e) {
     if (e.key === 'Escape') closeAll();
   });
-
-  /* ── Theme toggle ───────────────────────────────────────── */
-  var themeBtn = document.getElementById('nav-theme-btn');
-  if (themeBtn) {
-    /* Apply saved preference before first paint */
-    if (localStorage.getItem('multia-theme') === 'light') {
-      document.documentElement.classList.add('light-mode');
-    }
-    themeBtn.addEventListener('click', function () {
-      var isLight = document.documentElement.classList.toggle('light-mode');
-      localStorage.setItem('multia-theme', isLight ? 'light' : 'dark');
-      if (window._navRefresh) window._navRefresh();
-    });
-  }
 
   /* ── Hamburger (mobile) ─────────────────────────────────── */
   var hamburger  = document.querySelector('.nav-hamburger');

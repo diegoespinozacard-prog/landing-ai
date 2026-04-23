@@ -70,5 +70,14 @@
     "empresa": "Synopsis S.A",
     "cargo": "Marketing",
     "email": "daaguilar@synopsis.ws"
+  },
+  {
+    "fecha": "22-04-2026, 3:07:44 p. m.",
+    "nombre": "Rafael Alexander",
+    "apellido": "Bravo Pimentel",
+    "telefono": "+51 941 814 893",
+    "empresa": "Synopsis",
+    "cargo": "CEO",
+    "email": "rafaelbravo@synopsis.ws"
   }
 ]

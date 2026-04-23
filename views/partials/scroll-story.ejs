@@ -30,11 +30,6 @@
                 </span>
                 <% }) %>
               </div>
-              <div class="ss-dots">
-                <% storySteps.forEach((_, di) => { %>
-                <div class="ss-dot <%= di === idx ? 'active' : '' %>" onclick="goStep(<%= di %>)"></div>
-                <% }) %>
-              </div>
               <div class="ss-arrows">
                 <% if (idx > 0) { %>
                 <button class="ss-arrow-btn" onclick="goStep(<%= idx - 1 %>)" aria-label="Anterior">←</button>
@@ -61,7 +56,6 @@
             <div class="ss-bar">
               <div class="mac-dots"><span></span><span></span><span></span></div>
               <span class="ss-bar-title">MultIA — AI Workplace</span>
-              <span class="ss-bar-status">● En línea</span>
             </div>
 
             <!-- App header -->

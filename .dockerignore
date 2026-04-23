@@ -1,0 +1,23 @@
+node_modules
+npm-debug.log
+.git
+.gitignore
+.claude
+.vscode
+.idea
+.env
+.env.*
+*.log
+
+# Local dev artifacts / leads (will be recreated on boot)
+data/leads.csv
+data/leads.json
+
+# Misc
+Dockerfile
+.dockerignore
+README.md
+*.md
+
+# Legacy static prototype not served by Express
+index.html
