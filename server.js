@@ -59,17 +59,14 @@ const models = [
 
 const features = [
   { icon: 'image',            name: 'Generación de Imágenes',    desc: 'Crea, edita y transforma imágenes con IA avanzada a partir de texto o referencia visual' },
-  { icon: 'video',            name: 'Voice in Live',              desc: 'Convierte tu voz en comandos en tiempo real: dicta, edita y controla la plataforma sin tocar el teclado' },
-  { icon: 'music-2',          name: 'Procesamiento de Audio',     desc: 'Transcripción, análisis y generación de contenido de audio' },
   { icon: 'mic',              name: 'Transcripción Inteligente',  desc: 'Convierte audio y video a texto con precisión profesional' },
   { icon: 'table-2',          name: 'Análisis Excel/Datos',       desc: 'Procesa y analiza grandes datasets con insights automáticos' },
   { icon: 'layout-dashboard', name: 'Dashboards Dinámicos',       desc: 'Visualizaciones interactivas y reportes en tiempo real' },
   { icon: 'file-text',        name: 'Documentos Word/PDF/PPT',    desc: 'Genera, edita y optimiza documentos profesionales' },
   { icon: 'code-2',           name: 'Generación de Código',       desc: 'Escribir, revisar y optimizar código en múltiples lenguajes' },
-  { icon: 'scan-text',        name: 'OCR Avanzado',               desc: 'Extrae texto de imágenes y documentos escaneados' },
-  { icon: 'search',           name: 'Research Inteligente',       desc: 'Investigación automática con fuentes verificadas' },
-  { icon: 'bot',              name: 'Modo Agente IA',             desc: 'Asistente autónomo que ejecuta tareas complejas' },
-  { icon: 'globe',            name: 'Desarrollo HTML',            desc: 'Crea interfaces web responsive automáticamente' },
+  { icon: 'scan-text',        name: 'OCR',                        desc: 'Extrae texto de imágenes y documentos escaneados' },
+  { icon: 'search',           name: 'Búsqueda web',               desc: 'Investigación automática con fuentes verificadas' },
+  { icon: 'bot',              name: 'Modo Agente IA',             desc: 'Asistente que ejecuta tareas indicadas' },
 ];
 
 const userProfiles = [
@@ -111,9 +108,9 @@ const storySteps = [
   {
     index: 0,
     chip: 'Imágenes & Audio',
-    title: 'Procesa todo tipo',
+    title: 'Procesa distintos tipos',
     titleEm: 'de contenido multimedia',
-    body: 'Analiza y edita imágenes con IA y transcribe audio con precisión profesional.',
+    body: 'Analiza y edita imágenes con IA y transcribe audio con precisión.',
     tags: [
       { label: 'Imágenes', active: true  },
       { label: 'Audio',    active: true  },
@@ -125,20 +122,19 @@ const storySteps = [
     chip: 'Datos & Analytics',
     title: 'Analiza datos,',
     titleEm: 'genera dashboards',
-    body: 'Procesa grandes datasets de Excel y crea dashboards interactivos con insights automáticos en tiempo real.',
+    body: 'Procesa Excels y crea dashboards interactivos.',
     tags: [
       { label: 'Excel',      active: true  },
       { label: 'Dashboards', active: true  },
       { label: 'Reportes',   active: true  },
-      { label: 'Big Data',   active: false },
     ],
   },
   {
     index: 2,
     chip: 'Documentos',
-    title: 'Word, PDF y PPT',
-    titleEm: 'generados al instante',
-    body: 'Genera, edita y optimiza documentos profesionales. Transcribe reuniones y convierte audio a texto.',
+    title: 'Genera Word, PDF y PPT',
+    titleEm: 'en segundos',
+    body: 'Genera, edita y optimiza documentos. Convierte audio a texto.',
     tags: [
       { label: 'Word',          active: true,  icon: 'file-text'   },
       { label: 'PDF',           active: true,  icon: 'file-minus'  },
@@ -151,7 +147,7 @@ const storySteps = [
     chip: 'Código & Web',
     title: 'Escribe y despliega',
     titleEm: 'código en minutos',
-    body: 'Genera, revisa y optimiza código en múltiples lenguajes. Crea interfaces HTML responsive automáticamente.',
+    body: 'Genera, revisa y optimiza código en múltiples lenguajes.',
     tags: [
       { label: 'Python',     active: true  },
       { label: 'JavaScript', active: true  },
