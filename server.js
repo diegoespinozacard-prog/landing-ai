@@ -6,7 +6,7 @@ const https    = require('https');
 const querystring = require('querystring');
 const app      = express();
 
-const GSCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyiqOlA2YjCLsErdm1LpOaLtpuIfcoTV--iSDo2W8pxwYSHftynKDb1x0Jm_yVzwI2wog/exec';
+const GSCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw6IOs8gyILTCOgAG14B1GOTaIGu7pBWnUnAVsJRMiUdFqanirbece6FHQqSWBeuR2X1w/exec';
 function submitToGoogleSheet(record) {
   const body = JSON.stringify(record);
   function doRequest(url) {
@@ -382,7 +382,6 @@ app.get('/', (req, res) => {
 });
 
 /* ── Libro de Reclamaciones ─────────────────────────────── */
-const nodemailer = require('nodemailer');
 const REC_JSON   = path.join(DATA_DIR, 'reclamaciones.json');
 if (!fs.existsSync(REC_JSON)) fs.writeFileSync(REC_JSON, '[]', 'utf8');
 
@@ -438,16 +437,13 @@ app.post('/api/reclamaciones', async (req, res) => {
         </div>
       </div>`;
 
-    const transporter = nodemailer.createTransport({
-      service: 'gmail',
-      auth: { user: process.env.MAIL_USER, pass: process.env.MAIL_PASS }
-    });
-
-    await transporter.sendMail({
-      from: `"MultIA Reclamaciones" <${process.env.MAIL_USER}>`,
-      to:   'soporteventas@synopsis.ws',
-      cc:   d.email,
-      subject: `[${d.tipoReclamo}] ${numero} — ${d.nombre}`,
+    // Enviar via Apps Script (sin credenciales)
+    submitToGoogleSheet({
+      tipo:            'reclamo',
+      tipoReclamo:     d.tipoReclamo,
+      numero,
+      nombre:          d.nombre,
+      emailConsumidor: d.email,
       html
     });
 
