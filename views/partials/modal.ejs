@@ -61,7 +61,7 @@
         <label class="consent-item">
           <input type="checkbox" id="consent-marketing" class="consent-check">
           <span class="consent-box"></span>
-          <span class="consent-text">Acepto recibir comunicaciones sobre novedades y ofertas. <span class="consent-opt">(opcional)</span></span>
+          <span class="consent-text">Acepto recibir comunicaciones sobre novedades y ofertas. <span class="consent-req">*</span></span>
         </label>
 
         <p class="consent-footer">* <strong>Obligatorio.</strong> Tus datos se usan únicamente para gestionar tu cuenta. Puedes ejercer tus derechos de acceso, rectificación y cancelación escribiendo a <a href="mailto:soporteventas@synopsis.ws" class="consent-link">soporteventas@synopsis.ws</a></p>
@@ -104,16 +104,21 @@ function submitLead() {
   };
 
   var errEl = document.getElementById('lead-error');
-  var required = ['nombre','apellido','telefono','empresa','cargo','email'];
-  for (var k of required) {
-    if (!fields[k]) {
-      errEl.textContent = 'Por favor completa todos los campos.';
+  var labels = { nombre:'Nombre', apellido:'Apellido', telefono:'Teléfono', empresa:'Empresa', cargo:'Cargo', email:'Correo corporativo' };
+  for (var k of Object.keys(labels)) {
+    if (!fields[k] || fields[k] === code.trim()) {
+      errEl.textContent = 'El campo "' + labels[k] + '" es obligatorio.';
       errEl.style.display = 'block';
       return;
     }
   }
   if (!document.getElementById('consent-terms').checked) {
     errEl.textContent = 'Debes aceptar los Términos de Uso y la Política de Privacidad para continuar.';
+    errEl.style.display = 'block';
+    return;
+  }
+  if (!document.getElementById('consent-marketing').checked) {
+    errEl.textContent = 'Debes aceptar recibir comunicaciones sobre novedades y ofertas.';
     errEl.style.display = 'block';
     return;
   }
