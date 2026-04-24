@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/x-icon" href="/img/logoMultia.ico">
+  <title>Libro de Reclamaciones — MultIA</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'DM Sans', sans-serif; background: #f4f4f0; color: #1a1a1a; min-height: 100vh; padding: 40px 16px 60px; }
+    .rec-wrap { max-width: 860px; margin: 0 auto; }
+
+    /* Header */
+    .rec-back { display:inline-flex;align-items:center;gap:6px;font-size:13px;color:#666;text-decoration:none;margin-bottom:24px;transition:color 0.15s }
+    .rec-back:hover { color:#000 }
+    .rec-header { background:#1a1a1a;color:#fff;border-radius:12px 12px 0 0;padding:20px 28px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px }
+    .rec-header-left h1 { font-family:'Sora',sans-serif;font-size:18px;font-weight:800;letter-spacing:0.02em }
+    .rec-header-right { text-align:right }
+    .rec-header-right .rec-label { font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:#aaa;margin-bottom:2px }
+    .rec-header-right .rec-num { font-size:15px;font-weight:700;color:#F5A623 }
+    .rec-provider { background:#e8e5dc;border:1px solid #ccc;border-top:none;padding:14px 28px;font-size:12px;line-height:1.7 }
+    .rec-provider strong { font-weight:700 }
+
+    /* Form */
+    .rec-form { background:#fff;border:1px solid #ccc;border-top:none;border-radius:0 0 12px 12px;padding:0 }
+
+    .rec-section-title {
+      background:#d0cdc5;font-family:'Sora',sans-serif;font-size:11px;font-weight:700;
+      letter-spacing:0.06em;text-transform:uppercase;padding:8px 20px;border-bottom:1px solid #bbb
+    }
+    .rec-fields { padding:16px 20px;display:flex;flex-direction:column;gap:12px }
+    .rec-row { display:grid;grid-template-columns:1fr 1fr;gap:12px }
+    .rec-row-3 { display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px }
+    .rec-field { display:flex;flex-direction:column;gap:4px }
+    .rec-field label { font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;color:#555 }
+    .rec-field input, .rec-field textarea, .rec-field select {
+      border:1px solid #ccc;border-radius:6px;padding:8px 10px;font-size:13px;
+      font-family:'DM Sans',sans-serif;background:#fafafa;color:#1a1a1a;
+      transition:border-color 0.15s;outline:none;width:100%
+    }
+    .rec-field input:focus, .rec-field textarea:focus, .rec-field select:focus { border-color:#F5A623;background:#fff }
+    .rec-field textarea { resize:vertical;min-height:90px }
+
+    /* Tipo reclamo */
+    .rec-tipo { display:flex;gap:24px;padding:14px 20px;border-bottom:1px solid #eee }
+    .rec-tipo-opt { display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px;font-weight:600 }
+    .rec-tipo-opt input[type=radio] { accent-color:#F5A623;width:16px;height:16px }
+
+    /* Menor edad */
+    .rec-menor { padding:0 20px 14px;font-size:12px;color:#555 }
+    .rec-menor input { margin-top:4px;width:100%;border:1px solid #ccc;border-radius:6px;padding:7px 10px;font-size:13px;background:#fafafa }
+
+    /* Firma */
+    .rec-firma-row { display:flex;justify-content:flex-end;padding:0 20px 16px }
+    .rec-firma-box { border:1px solid #ccc;border-radius:6px;padding:10px 16px;font-size:11px;color:#888;text-align:center;min-width:180px }
+
+    /* Legal notice */
+    .rec-legal-notice { background:#f8f7f2;border-top:1px solid #ddd;padding:14px 20px;font-size:11px;color:#666;line-height:1.7 }
+    .rec-legal-notice strong { color:#1a1a1a }
+
+    /* Submit */
+    .rec-submit-wrap { padding:20px;border-top:1px solid #eee;display:flex;flex-direction:column;gap:12px }
+    .rec-btn {
+      width:100%;padding:14px;border-radius:10px;border:none;cursor:pointer;
+      font-family:'Sora',sans-serif;font-size:15px;font-weight:700;
+      background:#F5A623;color:#000;transition:background 0.15s
+    }
+    .rec-btn:hover { background:#D4890E }
+    .rec-btn:disabled { opacity:0.6;cursor:not-allowed }
+    .rec-error { font-size:12px;color:#ef4444;padding:8px 12px;background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.2);border-radius:6px;display:none }
+    .rec-success { text-align:center;padding:40px 20px }
+    .rec-success h2 { font-family:'Sora',sans-serif;font-size:22px;font-weight:800;margin-bottom:8px }
+    .rec-success p { color:#666;font-size:14px;line-height:1.7;margin-bottom:20px }
+    .rec-success .rec-btn { max-width:200px;margin:0 auto;display:block }
+
+    @media(max-width:600px) { .rec-row,.rec-row-3 { grid-template-columns:1fr } }
+  </style>
+</head>
+<body>
+<div class="rec-wrap">
+
+  <a href="/" class="rec-back">← Volver a MultIA</a>
+
+  <!-- Header -->
+  <div class="rec-header">
+    <div class="rec-header-left">
+      <div style="font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:#aaa;margin-bottom:4px">Hoja de Reclamación Virtual</div>
+      <h1>Libro de Reclamaciones</h1>
+    </div>
+    <div class="rec-header-right">
+      <div class="rec-label">N°</div>
+      <div class="rec-num" id="rec-numero">—</div>
+    </div>
+  </div>
+
+  <!-- Proveedor -->
+  <div class="rec-provider">
+    <strong>PROVEEDOR:</strong> SYNOPSIS S.A. &nbsp;|&nbsp;
+    <strong>RUC:</strong> 20265913769 &nbsp;|&nbsp;
+    <strong>DOMICILIO:</strong> Av. Dionisio Derteano 184, San Isidro, Lima, Perú
+  </div>
+
+  <!-- Form -->
+  <div class="rec-form">
+
+    <div id="rec-form-content">
+
+      <!-- Sección 1 -->
+      <div class="rec-section-title">1. Identificación del consumidor reclamante</div>
+      <div class="rec-fields">
+        <div class="rec-row">
+          <div class="rec-field"><label>Nombre *</label><input id="rc-nombre" type="text" placeholder="Nombre completo"></div>
+          <div class="rec-field"><label>DNI / CE *</label><input id="rc-dni" type="text" placeholder="12345678"></div>
+        </div>
+        <div class="rec-field"><label>Domicilio *</label><input id="rc-domicilio" type="text" placeholder="Dirección completa"></div>
+        <div class="rec-row">
+          <div class="rec-field"><label>Teléfono *</label><input id="rc-telefono" type="tel" placeholder="+51 999 999 999"></div>
+          <div class="rec-field"><label>E-mail *</label><input id="rc-email" type="email" placeholder="correo@ejemplo.com"></div>
+        </div>
+      </div>
+      <div class="rec-menor">
+        <label style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;color:#555">Si es menor de edad, nombre del padre, madre o apoderado:</label>
+        <input id="rc-apoderado" type="text" placeholder="(Dejar en blanco si no aplica)">
+      </div>
+
+      <!-- Sección 2 -->
+      <div class="rec-section-title">2. Identificación del bien contratado</div>
+      <div class="rec-fields">
+        <div class="rec-row">
+          <div class="rec-field">
+            <label>Tipo *</label>
+            <select id="rc-tipo-bien">
+              <option value="">Seleccionar…</option>
+              <option value="Producto">Producto</option>
+              <option value="Servicio">Servicio</option>
+            </select>
+          </div>
+          <div class="rec-field"><label>Monto reclamado (S/)</label><input id="rc-monto" type="text" placeholder="0.00"></div>
+        </div>
+        <div class="rec-field"><label>Descripción del bien / servicio *</label><input id="rc-descripcion-bien" type="text" placeholder="Ej: Suscripción MultIA Pro"></div>
+      </div>
+
+      <!-- Sección 3 -->
+      <div class="rec-section-title">3. Detalle de la reclamación y pedido del consumidor</div>
+      <div class="rec-tipo">
+        <label class="rec-tipo-opt"><input type="radio" name="rc-tipo" value="Reclamo" checked> Reclamo <span style="font-size:10px;color:#888;font-weight:400">(disconformidad con producto/servicio)</span></label>
+        <label class="rec-tipo-opt"><input type="radio" name="rc-tipo" value="Queja"> Queja <span style="font-size:10px;color:#888;font-weight:400">(atención al público)</span></label>
+      </div>
+      <div class="rec-fields">
+        <div class="rec-field"><label>Detalle *</label><textarea id="rc-detalle" placeholder="Describe con detalle el motivo de tu reclamo o queja…" rows="5"></textarea></div>
+        <div class="rec-field"><label>Pedido *</label><textarea id="rc-pedido" placeholder="¿Qué solución o acción solicitas?" rows="3"></textarea></div>
+      </div>
+      <div class="rec-firma-row">
+        <div class="rec-firma-box">Firma del Consumidor<br><span style="font-size:9px">(Envío electrónico equivale a firma)</span></div>
+      </div>
+
+      <!-- Aviso legal -->
+      <div class="rec-legal-notice">
+        <strong>* La formulación del reclamo no impide acudir a otras vías de solución de controversias ni es requisito previo para interponer una denuncia ante el INDECOPI.</strong><br>
+        * El proveedor debe dar respuesta al reclamo o queja en un plazo no mayor a <strong>quince (15) días hábiles</strong>, el cual es improrrogable.<br>
+        * Regulado por la <strong>Ley N° 29751</strong> y D.S. N° 011-2011-PCM y modificaciones.
+      </div>
+
+      <!-- Submit -->
+      <div class="rec-submit-wrap">
+        <div class="rec-error" id="rc-error"></div>
+        <button class="rec-btn" id="rc-btn" onclick="submitReclamo()">Enviar reclamación →</button>
+      </div>
+
+    </div><!-- /rec-form-content -->
+
+    <!-- Success -->
+    <div id="rec-success" class="rec-success" style="display:none">
+      <div style="font-size:48px;margin-bottom:12px">✅</div>
+      <h2>Reclamación enviada</h2>
+      <p>Hemos recibido tu reclamo y enviado una copia a tu correo.<br>
+      Synopsis S.A. te responderá en un plazo máximo de <strong>15 días hábiles</strong>.</p>
+      <a href="/" class="rec-btn" style="text-decoration:none;display:inline-block;padding:12px 32px;width:auto">Volver al inicio</a>
+    </div>
+
+  </div><!-- /rec-form -->
+
+</div>
+
+<script>
+  // Generar número correlativo por sesión (el definitivo lo asigna el server)
+  document.getElementById('rec-numero').textContent = 'REC-' + Date.now().toString().slice(-6);
+
+  function submitReclamo() {
+    var tipoReclamo = document.querySelector('input[name="rc-tipo"]:checked').value;
+    var data = {
+      nombre:          document.getElementById('rc-nombre').value.trim(),
+      dni:             document.getElementById('rc-dni').value.trim(),
+      domicilio:       document.getElementById('rc-domicilio').value.trim(),
+      telefono:        document.getElementById('rc-telefono').value.trim(),
+      email:           document.getElementById('rc-email').value.trim(),
+      apoderado:       document.getElementById('rc-apoderado').value.trim(),
+      tipoBien:        document.getElementById('rc-tipo-bien').value,
+      monto:           document.getElementById('rc-monto').value.trim(),
+      descripcionBien: document.getElementById('rc-descripcion-bien').value.trim(),
+      tipoReclamo:     tipoReclamo,
+      detalle:         document.getElementById('rc-detalle').value.trim(),
+      pedido:          document.getElementById('rc-pedido').value.trim(),
+    };
+
+    var errEl = document.getElementById('rc-error');
+    var required = ['nombre','dni','domicilio','telefono','email','tipoBien','descripcionBien','detalle','pedido'];
+    for (var k of required) {
+      if (!data[k]) {
+        errEl.textContent = 'Por favor completa todos los campos obligatorios (*).';
+        errEl.style.display = 'block';
+        return;
+      }
+    }
+    errEl.style.display = 'none';
+    var btn = document.getElementById('rc-btn');
+    btn.disabled = true;
+    btn.textContent = 'Enviando…';
+
+    fetch('/api/reclamaciones', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    })
+    .then(function(r){ return r.json(); })
+    .then(function(res){
+      if (res.ok) {
+        document.getElementById('rec-form-content').style.display = 'none';
+        document.getElementById('rec-success').style.display = 'block';
+        document.getElementById('rec-numero').textContent = res.numero || document.getElementById('rec-numero').textContent;
+      } else {
+        errEl.textContent = res.error || 'Error al enviar. Intenta de nuevo.';
+        errEl.style.display = 'block';
+        btn.disabled = false;
+        btn.textContent = 'Enviar reclamación →';
+      }
+    })
+    .catch(function(){
+      errEl.textContent = 'Error de conexión. Intenta de nuevo.';
+      errEl.style.display = 'block';
+      btn.disabled = false;
+      btn.textContent = 'Enviar reclamación →';
+    });
+  }
+</script>
+</body>
+</html>

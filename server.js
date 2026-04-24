@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express  = require('express');
 const path     = require('path');
 const fs       = require('fs');
@@ -378,6 +379,83 @@ const legalDocs = {
 
 app.get('/', (req, res) => {
   res.render('index', { models, features, userProfiles, benefits, pricingPlans, storySteps, tutorialVideos });
+});
+
+/* ── Libro de Reclamaciones ─────────────────────────────── */
+const nodemailer = require('nodemailer');
+const REC_JSON   = path.join(DATA_DIR, 'reclamaciones.json');
+if (!fs.existsSync(REC_JSON)) fs.writeFileSync(REC_JSON, '[]', 'utf8');
+
+app.get('/reclamaciones', (req, res) => res.render('reclamaciones'));
+
+app.post('/api/reclamaciones', async (req, res) => {
+  try {
+    const d = req.body;
+    const required = ['nombre','dni','domicilio','telefono','email','tipoBien','descripcionBien','detalle','pedido'];
+    for (const k of required) {
+      if (!d[k]) return res.json({ ok: false, error: 'Campos incompletos.' });
+    }
+
+    // Número correlativo
+    let recs = [];
+    try { recs = JSON.parse(fs.readFileSync(REC_JSON, 'utf8')); } catch(e) { recs = []; }
+    const numero = 'REC-' + String(recs.length + 1).padStart(5, '0');
+    const fecha  = new Date().toLocaleString('es-PE', { timeZone: 'America/Lima' });
+    const record = { numero, fecha, ...d };
+    recs.push(record);
+    fs.writeFileSync(REC_JSON, JSON.stringify(recs, null, 2), 'utf8');
+
+    // Email body
+    const html = `
+      <div style="font-family:Arial,sans-serif;max-width:700px;margin:0 auto;color:#1a1a1a">
+        <div style="background:#1a1a1a;color:#fff;padding:20px 28px;border-radius:8px 8px 0 0">
+          <h2 style="margin:0;font-size:18px">📋 Libro de Reclamaciones — MultIA</h2>
+          <p style="margin:4px 0 0;font-size:13px;color:#aaa">N° ${numero} · ${fecha}</p>
+        </div>
+        <div style="background:#f8f7f2;border:1px solid #ddd;border-top:none;padding:20px 28px;border-radius:0 0 8px 8px">
+          <h3 style="color:#555;font-size:11px;text-transform:uppercase;letter-spacing:.06em;margin:0 0 12px">1. Datos del consumidor</h3>
+          <table style="width:100%;border-collapse:collapse;font-size:13px;margin-bottom:20px">
+            <tr><td style="padding:6px 12px;background:#fff;border:1px solid #ddd;font-weight:700;width:160px">Nombre</td><td style="padding:6px 12px;background:#fff;border:1px solid #ddd">${d.nombre}</td></tr>
+            <tr><td style="padding:6px 12px;background:#fff;border:1px solid #ddd;font-weight:700">DNI / CE</td><td style="padding:6px 12px;background:#fff;border:1px solid #ddd">${d.dni}</td></tr>
+            <tr><td style="padding:6px 12px;background:#fff;border:1px solid #ddd;font-weight:700">Domicilio</td><td style="padding:6px 12px;background:#fff;border:1px solid #ddd">${d.domicilio}</td></tr>
+            <tr><td style="padding:6px 12px;background:#fff;border:1px solid #ddd;font-weight:700">Teléfono</td><td style="padding:6px 12px;background:#fff;border:1px solid #ddd">${d.telefono}</td></tr>
+            <tr><td style="padding:6px 12px;background:#fff;border:1px solid #ddd;font-weight:700">E-mail</td><td style="padding:6px 12px;background:#fff;border:1px solid #ddd">${d.email}</td></tr>
+            ${d.apoderado ? `<tr><td style="padding:6px 12px;background:#fff;border:1px solid #ddd;font-weight:700">Apoderado</td><td style="padding:6px 12px;background:#fff;border:1px solid #ddd">${d.apoderado}</td></tr>` : ''}
+          </table>
+          <h3 style="color:#555;font-size:11px;text-transform:uppercase;letter-spacing:.06em;margin:0 0 12px">2. Bien contratado</h3>
+          <table style="width:100%;border-collapse:collapse;font-size:13px;margin-bottom:20px">
+            <tr><td style="padding:6px 12px;background:#fff;border:1px solid #ddd;font-weight:700;width:160px">Tipo</td><td style="padding:6px 12px;background:#fff;border:1px solid #ddd">${d.tipoBien}</td></tr>
+            <tr><td style="padding:6px 12px;background:#fff;border:1px solid #ddd;font-weight:700">Descripción</td><td style="padding:6px 12px;background:#fff;border:1px solid #ddd">${d.descripcionBien}</td></tr>
+            ${d.monto ? `<tr><td style="padding:6px 12px;background:#fff;border:1px solid #ddd;font-weight:700">Monto reclamado</td><td style="padding:6px 12px;background:#fff;border:1px solid #ddd">S/ ${d.monto}</td></tr>` : ''}
+          </table>
+          <h3 style="color:#555;font-size:11px;text-transform:uppercase;letter-spacing:.06em;margin:0 0 12px">3. Detalle de la reclamación</h3>
+          <table style="width:100%;border-collapse:collapse;font-size:13px">
+            <tr><td style="padding:6px 12px;background:#fff;border:1px solid #ddd;font-weight:700;width:160px">Tipo</td><td style="padding:6px 12px;background:#fff;border:1px solid #ddd"><strong>${d.tipoReclamo}</strong></td></tr>
+            <tr><td style="padding:6px 12px;background:#fff;border:1px solid #ddd;font-weight:700;vertical-align:top">Detalle</td><td style="padding:6px 12px;background:#fff;border:1px solid #ddd;white-space:pre-wrap">${d.detalle}</td></tr>
+            <tr><td style="padding:6px 12px;background:#fff;border:1px solid #ddd;font-weight:700;vertical-align:top">Pedido</td><td style="padding:6px 12px;background:#fff;border:1px solid #ddd;white-space:pre-wrap">${d.pedido}</td></tr>
+          </table>
+          <p style="margin-top:20px;font-size:11px;color:#888">El proveedor debe responder en un plazo máximo de <strong>15 días hábiles</strong> — Ley N° 29751</p>
+        </div>
+      </div>`;
+
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: { user: process.env.MAIL_USER, pass: process.env.MAIL_PASS }
+    });
+
+    await transporter.sendMail({
+      from: `"MultIA Reclamaciones" <${process.env.MAIL_USER}>`,
+      to:   'soporteventas@synopsis.ws',
+      cc:   d.email,
+      subject: `[${d.tipoReclamo}] ${numero} — ${d.nombre}`,
+      html
+    });
+
+    res.json({ ok: true, numero });
+  } catch(err) {
+    console.error('Reclamación error:', err.message);
+    res.json({ ok: false, error: 'Error al procesar. Intenta de nuevo.' });
+  }
 });
 
 app.get('/legal/:slug', (req, res) => {
