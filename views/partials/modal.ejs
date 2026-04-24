@@ -104,13 +104,19 @@ function submitLead() {
   };
 
   var errEl = document.getElementById('lead-error');
-  var labels = { nombre:'Nombre', apellido:'Apellido', telefono:'Teléfono', empresa:'Empresa', cargo:'Cargo', email:'Correo corporativo' };
+  var labels = { nombre:'Nombre', apellido:'Apellido', empresa:'Empresa', cargo:'Cargo', email:'Correo corporativo' };
   for (var k of Object.keys(labels)) {
-    if (!fields[k] || fields[k] === code.trim()) {
+    if (!fields[k]) {
       errEl.textContent = 'El campo "' + labels[k] + '" es obligatorio.';
       errEl.style.display = 'block';
       return;
     }
+  }
+  var soloNumero = document.getElementById('lead-telefono').value.trim();
+  if (!soloNumero) {
+    errEl.textContent = 'El campo "Teléfono" es obligatorio.';
+    errEl.style.display = 'block';
+    return;
   }
   if (!document.getElementById('consent-terms').checked) {
     errEl.textContent = 'Debes aceptar los Términos de Uso y la Política de Privacidad para continuar.';
