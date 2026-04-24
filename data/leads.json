@@ -112,5 +112,27 @@
     "email": "diego.espinoza.card@SYNOPIS.WS",
     "terminos": "Sí",
     "marketing": "Sí"
+  },
+  {
+    "fecha": "24-04-2026, 2:58:25 p. m.",
+    "nombre": "dd",
+    "apellido": "d",
+    "telefono": "+51 ",
+    "empresa": "d",
+    "cargo": "d",
+    "email": "d@e.ws",
+    "terminos": "Sí",
+    "marketing": "No"
+  },
+  {
+    "fecha": "24-04-2026, 3:00:34 p. m.",
+    "nombre": "z",
+    "apellido": "z",
+    "telefono": "+51 ",
+    "empresa": "z",
+    "cargo": "z",
+    "email": "z@s.ws",
+    "terminos": "Sí",
+    "marketing": "No"
   }
 ]
