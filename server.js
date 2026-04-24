@@ -5,7 +5,7 @@ const https    = require('https');
 const querystring = require('querystring');
 const app      = express();
 
-const GSCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwlHc-Vi3gShgytoWWcIoL_8Qord3A5fOO9iQ2HT1z56InMJkfkAw_0LSvWR9IjKJbNkQ/exec';
+const GSCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyiqOlA2YjCLsErdm1LpOaLtpuIfcoTV--iSDo2W8pxwYSHftynKDb1x0Jm_yVzwI2wog/exec';
 function submitToGoogleSheet(record) {
   const body = JSON.stringify(record);
   function doRequest(url) {
@@ -398,7 +398,7 @@ const PERSONAL_DOMAINS = new Set([
 ]);
 
 app.post('/api/leads', (req, res) => {
-  const { nombre, apellido, telefono, empresa, cargo, email } = req.body;
+  const { nombre, apellido, telefono, empresa, cargo, email, terminos, marketing } = req.body;
   if (!nombre || !apellido || !telefono || !empresa || !cargo || !email) {
     return res.json({ ok: false, error: 'Campos incompletos' });
   }
@@ -408,7 +408,7 @@ app.post('/api/leads', (req, res) => {
   }
 
   const fecha = new Date().toLocaleString('es-CL', { timeZone: 'America/Santiago' });
-  const record = { fecha, nombre, apellido, telefono, empresa, cargo, email };
+  const record = { fecha, nombre, apellido, telefono, empresa, cargo, email, terminos: terminos||'No', marketing: marketing||'No' };
 
   try {
     // 1. Save to JSON (primary backup — never loses data)
@@ -420,7 +420,7 @@ app.post('/api/leads', (req, res) => {
     // 2. Rebuild CSV from JSON so it's always in sync
     const esc = (v) => '"' + String(v).replace(/"/g, '""') + '"';
     const rows = leads.map(r =>
-      [esc(r.fecha), esc(r.nombre), esc(r.apellido), esc(r.telefono), esc(r.empresa), esc(r.cargo), esc(r.email)].join(',')
+      [esc(r.fecha), esc(r.nombre), esc(r.apellido), esc(r.telefono), esc(r.empresa), esc(r.cargo), esc(r.email), esc(r.terminos||'No'), esc(r.marketing||'No')].join(',')
     ).join('\n');
     fs.writeFileSync(LEADS_CSV, CSV_HEADER + rows + '\n', 'utf8');
 
@@ -444,7 +444,7 @@ app.get('/admin/leads/download', (req, res) => {
     if (!leads.length) return res.status(404).send('Sin leads registrados aún.');
     const esc = (v) => '"' + String(v || '').replace(/"/g, '""') + '"';
     const rows = leads.map(r =>
-      [esc(r.fecha), esc(r.nombre), esc(r.apellido), esc(r.telefono), esc(r.empresa), esc(r.cargo), esc(r.email)].join(',')
+      [esc(r.fecha), esc(r.nombre), esc(r.apellido), esc(r.telefono), esc(r.empresa), esc(r.cargo), esc(r.email), esc(r.terminos||'No'), esc(r.marketing||'No')].join(',')
     ).join('\n');
     const csv = CSV_HEADER + rows + '\n';
     res.setHeader('Content-Type', 'text/csv; charset=utf-8');

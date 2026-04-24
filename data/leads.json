@@ -79,5 +79,38 @@
     "empresa": "Synopsis",
     "cargo": "CEO",
     "email": "rafaelbravo@synopsis.ws"
+  },
+  {
+    "fecha": "23-04-2026, 10:01:44 p. m.",
+    "nombre": "Test",
+    "apellido": "Check",
+    "telefono": "+51 999 999 999",
+    "empresa": "Synopsis",
+    "cargo": "Tester",
+    "email": "test@synopsis.ws",
+    "terminos": "Si",
+    "marketing": "No"
+  },
+  {
+    "fecha": "23-04-2026, 10:02:28 p. m.",
+    "nombre": "Test",
+    "apellido": "Check",
+    "telefono": "+51 999 999 999",
+    "empresa": "Synopsis",
+    "cargo": "Tester",
+    "email": "test@synopsis.ws",
+    "terminos": "S�",
+    "marketing": "No"
+  },
+  {
+    "fecha": "23-04-2026, 10:04:22 p. m.",
+    "nombre": "Diego",
+    "apellido": "Espinoza",
+    "telefono": "+51 789 545 621",
+    "empresa": "Synopsis S.A.",
+    "cargo": "CTO",
+    "email": "diego.espinoza.card@SYNOPIS.WS",
+    "terminos": "Sí",
+    "marketing": "Sí"
   }
 ]

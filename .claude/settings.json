@@ -10,7 +10,9 @@
       "Bash(curl -s \"https://twin.so/_astro/21-days.BdJhaSHb.css\")",
       "Bash(curl -s \"https://twin.so/_astro/Homepage.wY4uJqZu.js\")",
       "Bash(curl -s \"https://twin.so/_astro/client.BLUn-lwI.js\")",
-      "WebFetch(domain:www.synopsis.ws)"
+      "WebFetch(domain:www.synopsis.ws)",
+      "PowerShell($procId = \\(Get-NetTCPConnection -LocalPort 3800 -ErrorAction SilentlyContinue | Select-Object -First 1\\).OwningProcess; if \\($procId\\) { Stop-Process -Id $procId -Force }; Start-Sleep 1; Start-Process -NoNewWindow node -ArgumentList \"server.js\" -RedirectStandardOutput \"server.log\" -RedirectStandardError \"server_err.log\"; Start-Sleep 2; Invoke-RestMethod -Uri http://localhost:3800/api/leads -Method POST -ContentType \"application/json\" -Body '{\"nombre\":\"Test\",\"apellido\":\"Check\",\"telefono\":\"+51 999 999 999\",\"empresa\":\"Synopsis\",\"cargo\":\"Tester\",\"email\":\"test@synopsis.ws\",\"terminos\":\"Si\",\"marketing\":\"No\"}')",
+      "Bash(curl -s -X POST http://localhost:3800/api/leads -H 'Content-Type: application/json' -d '{\"nombre\":\"Test\",\"apellido\":\"Check\",\"telefono\":\"+51 999 999 999\",\"empresa\":\"Synopsis\",\"cargo\":\"Tester\",\"email\":\"test@synopsis.ws\",\"terminos\":\"Sí\",\"marketing\":\"No\"}')"
     ]
   }
 }
